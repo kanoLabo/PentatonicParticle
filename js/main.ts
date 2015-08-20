@@ -26,7 +26,7 @@ namespace project {
                 {
                     src: "150820_1_01.ogg",
                     data: {
-                        channels: 5,
+                        channels: 50,
                         audioSprite: audioSpriteData
                     }
                 }
@@ -57,7 +57,7 @@ namespace project {
         * Tickerを開始
         * */
         private startTicker():void {
-            setInterval(() => this.tick(), 100);
+            setInterval(() => this.tick(), 90);
         }
 
         private tick() {
@@ -67,23 +67,22 @@ namespace project {
     }
 }
 
-namespace project {
-    /** デバッグモードかどうか。本番公開時にはfalseにする */
-    let DEBUG_MODE:boolean = true;
 
-    /**
-     * デバッグモードが有効で、console.log()が使える時に、
-     * コンソールに文字列を出力します。
-     * @param {string[]} ...args 出力したい文字列です。
-     */
-    export function trace(...args:string[]):void {
-        if (DEBUG_MODE && this.console && typeof console.log != "undefined") {
-            let str:string = "";
-            if (args.length > 0)
-                str = args.join(", ");
+/** デバッグモードかどうか。本番公開時にはfalseにする */
+let DEBUG_MODE:boolean = true;
 
-            console.log(str);
-        }
+/**
+ * デバッグモードが有効で、console.log()が使える時に、
+ * コンソールに文字列を出力します。
+ * @param {string[]} ...args 出力したい文字列です。
+ */
+function trace(...args:string[]):void {
+    if (DEBUG_MODE && this.console && typeof console.log != "undefined") {
+        let str:string = "";
+        if (args.length > 0)
+            str = args.join(", ");
+
+        console.log(str);
     }
 }
 
