@@ -205,7 +205,14 @@ namespace project {
                 return this._particlePool.shift();
             }
             else {
-                return new Particle();
+                // アイコンの Unicode を指定
+                var iconUnicode = "f001";
+// Unicode から文字コードに変換
+                var iconInt = parseInt(iconUnicode, 16);
+// 文字コードから文字列に変換する
+                var iconStr = String.fromCharCode(iconInt);
+// CreateJS のテキストを作成
+                return new Particle(iconStr);
             }
         }
 
@@ -227,15 +234,17 @@ namespace project {
     /*
      * パーティクルのクラス
      * */
-    class Particle extends createjs.Shape {
+    class Particle extends createjs.Text {
         private _life:number;   // パーティクルの寿命
         private _count:number;  // パーティクルの年齢。時間経過とともに加算されていく。
         private _vx:number; // 速度X
         private _vy:number; // 速度Y
         public isDead:boolean;  // パーティクルが寿命を迎えたかどうか。
 
-        public constructor() {
-            super();
+        public constructor(text: string) {
+            let fontSize:number = 12 + Math.floor(30 * Math.random());
+            super(text, fontSize + "px FontAwesome");
+
             // 加算で重ねる
             this.compositeOperation = "lighter";
             this.mouseEnabled = false;
@@ -254,19 +263,14 @@ namespace project {
             this._vy = parentVY + 4 + Math.random() * 2;
             this.isDead = false;
             this.alpha = 1;
+            this.rotation = 20 * Math.PI * (Math.random() - 0.5);
             var size:number = 30 + Math.random() * 20;
             var colorHSL:string = createjs.Graphics.getHSL(
                 new Date().getTime() / 20 + Math.random() * 5,
                 100,
                 50
             );
-
-            // 既存のグラフィックを一旦クリア
-            this.graphics.clear();
-            // ぼんやりとした円を描く
-            this.graphics.beginRadialGradientFill([colorHSL, "#000000"], [0, 1], 0, 0, size / 2, 0, 0, size);
-            this.graphics.drawCircle(0, 0, size);
-            this.graphics.endFill();
+            this.color = colorHSL;
         }
 
         /*

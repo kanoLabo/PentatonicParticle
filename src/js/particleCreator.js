@@ -183,7 +183,14 @@ var project;
                 return this._particlePool.shift();
             }
             else {
-                return new Particle();
+                // アイコンの Unicode を指定
+                var iconUnicode = "f001";
+                // Unicode から文字コードに変換
+                var iconInt = parseInt(iconUnicode, 16);
+                // 文字コードから文字列に変換する
+                var iconStr = String.fromCharCode(iconInt);
+                // CreateJS のテキストを作成
+                return new Particle(iconStr);
             }
         };
         /*
@@ -206,8 +213,9 @@ var project;
      * */
     var Particle = (function (_super) {
         __extends(Particle, _super);
-        function Particle() {
-            _super.call(this);
+        function Particle(text) {
+            var fontSize = 12 + Math.floor(30 * Math.random());
+            _super.call(this, text, fontSize + "px FontAwesome");
             // 加算で重ねる
             this.compositeOperation = "lighter";
             this.mouseEnabled = false;
@@ -225,14 +233,10 @@ var project;
             this._vy = parentVY + 4 + Math.random() * 2;
             this.isDead = false;
             this.alpha = 1;
+            this.rotation = 20 * Math.PI * (Math.random() - 0.5);
             var size = 30 + Math.random() * 20;
             var colorHSL = createjs.Graphics.getHSL(new Date().getTime() / 20 + Math.random() * 5, 100, 50);
-            // 既存のグラフィックを一旦クリア
-            this.graphics.clear();
-            // ぼんやりとした円を描く
-            this.graphics.beginRadialGradientFill([colorHSL, "#000000"], [0, 1], 0, 0, size / 2, 0, 0, size);
-            this.graphics.drawCircle(0, 0, size);
-            this.graphics.endFill();
+            this.color = colorHSL;
         };
         /*
          * パーティクルの時間経過処理。
@@ -258,6 +262,6 @@ var project;
             }
         };
         return Particle;
-    })(createjs.Shape);
+    })(createjs.Text);
 })(project || (project = {}));
 //# sourceMappingURL=particleCreator.js.map
