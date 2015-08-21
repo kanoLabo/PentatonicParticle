@@ -3,19 +3,28 @@
 /// <reference path="../typings/easeljs/easeljs.d.ts" />
 /// <reference path="../typings/soundjs/soundjs.d.ts" />
 createjs.Sound.initializeDefaultPlugins();
-//createjs.Sound.registerPlugins([createjs.HTMLAudioPlugin]);
 var project;
 (function (project) {
     var Main = (function () {
         function Main() {
-            var _this = this;
             trace("Active Plugin is", createjs.Sound.activePlugin.toString());
-            var assetsPath = "./sounds/";
-            var soundManifest = this.createSoundManifest();
             createjs.Sound.alternateExtensions = ["mp3"]; // add other extensions to try loading if the src file extension is not supported
-            createjs.Sound.addEventListener("fileload", function () { return _this.startTicker(); });
-            createjs.Sound.registerSounds(soundManifest, assetsPath);
         }
+        Main.prototype.init = function () {
+            var soundManifest = this.createSoundManifest();
+            createjs.Sound.registerSounds(soundManifest);
+            this.startPreload(soundManifest);
+        };
+        /*
+         * プリロードを開始する
+         * */
+        Main.prototype.startPreload = function (soundManifest) {
+            var _this = this;
+            var queue = new createjs.LoadQueue();
+            queue.installPlugin(createjs.Sound);
+            queue.addEventListener("complete", function (event) { return _this.loadComplete(event); });
+            queue.loadManifest(soundManifest);
+        };
         /*
          * Soundファイル用マニフェストを作成する
          * */
@@ -23,7 +32,7 @@ var project;
             var audioSpriteData = this.prepareSE();
             var manifest = [
                 {
-                    src: "150821_1_01.ogg",
+                    src: "sounds/150821_1_01.ogg",
                     data: {
                         channels: 50,
                         audioSprite: audioSpriteData
@@ -49,9 +58,12 @@ var project;
             }
             return allSEData;
         };
+        Main.prototype.loadComplete = function (event) {
+            this.startTicker();
+        };
         /*
-        * Tickerを開始
-        * */
+         * Tickerを開始
+         * */
         Main.prototype.startTicker = function () {
             var _this = this;
             setInterval(function () { return _this.tick(); }, 200);
@@ -84,6 +96,7 @@ function trace() {
     }
 }
 window.addEventListener("load", function (event) {
-    new project.Main();
+    var main = new project.Main();
+    main.init();
 });
 //# sourceMappingURL=main.js.map

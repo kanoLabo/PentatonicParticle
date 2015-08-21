@@ -9,12 +9,23 @@ namespace project {
     export class Main {
         constructor() {
             trace("Active Plugin is", createjs.Sound.activePlugin.toString());
-
-            const assetsPath:string = "./sounds/";
-            let soundManifest:Object[] = this.createSoundManifest();
             createjs.Sound.alternateExtensions = ["mp3"];	// add other extensions to try loading if the src file extension is not supported
-            createjs.Sound.addEventListener("fileload", () => this.startTicker());
-            createjs.Sound.registerSounds(soundManifest, assetsPath);
+        }
+
+        public init():void {
+            let soundManifest:Object[] = this.createSoundManifest();
+            createjs.Sound.registerSounds(soundManifest);
+            this.startPreload(soundManifest);
+        }
+
+        /*
+         * プリロードを開始する
+         * */
+        private startPreload(soundManifest:Object[]):void {
+            let queue:createjs.LoadQueue = new createjs.LoadQueue();
+            queue.installPlugin(createjs.Sound);
+            queue.addEventListener("complete", (event) => this.loadComplete(event));
+            queue.loadManifest(soundManifest);
         }
 
         /*
@@ -24,7 +35,7 @@ namespace project {
             let audioSpriteData:Object[] = this.prepareSE();
             let manifest:Object[] = [
                 {
-                    src: "150821_1_01.ogg",
+                    src: "sounds/150821_1_01.ogg",
                     data: {
                         channels: 50,
                         audioSprite: audioSpriteData
@@ -53,9 +64,13 @@ namespace project {
             return allSEData;
         }
 
+        private loadComplete(event):void {
+            this.startTicker();
+        }
+
         /*
-        * Tickerを開始
-        * */
+         * Tickerを開始
+         * */
         private startTicker():void {
             setInterval(() => this.tick(), 200);
         }
@@ -87,5 +102,7 @@ function trace(...args:string[]):void {
 }
 
 window.addEventListener("load", (event)=> {
-    new project.Main();
+    var main:project.Main = new project.Main();
+    main.init();
+
 });
