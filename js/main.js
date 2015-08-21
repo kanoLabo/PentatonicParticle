@@ -3,6 +3,7 @@
 /// <reference path="../typings/easeljs/easeljs.d.ts" />
 /// <reference path="../typings/soundjs/soundjs.d.ts" />
 createjs.Sound.initializeDefaultPlugins();
+//createjs.Sound.registerPlugins([createjs.HTMLAudioPlugin]);
 var project;
 (function (project) {
     var Main = (function () {
@@ -22,7 +23,7 @@ var project;
             var audioSpriteData = this.prepareSE();
             var manifest = [
                 {
-                    src: "150820_1_01.ogg",
+                    src: "150821_1_01.ogg",
                     data: {
                         channels: 50,
                         audioSprite: audioSpriteData
@@ -36,8 +37,8 @@ var project;
          * */
         Main.prototype.prepareSE = function () {
             var allSEData = [];
-            var SE_STEP = 500;
-            var SE_DURATION = 300;
+            var SE_STEP = 4000;
+            var SE_DURATION = 2600;
             for (var i = 0; i < 11; i++) {
                 var seData = {
                     id: "se_" + i,
@@ -53,7 +54,7 @@ var project;
         * */
         Main.prototype.startTicker = function () {
             var _this = this;
-            setInterval(function () { return _this.tick(); }, 90);
+            setInterval(function () { return _this.tick(); }, 200);
         };
         Main.prototype.tick = function () {
             var soundID = "se_" + Math.floor(Math.random() * 11);

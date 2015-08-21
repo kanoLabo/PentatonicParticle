@@ -24,7 +24,7 @@ namespace project {
             let audioSpriteData:Object[] = this.prepareSE();
             let manifest:Object[] = [
                 {
-                    src: "150820_1_01.ogg",
+                    src: "150821_1_01.ogg",
                     data: {
                         channels: 50,
                         audioSprite: audioSpriteData
@@ -39,8 +39,8 @@ namespace project {
          * */
         private prepareSE():Object[] {
             let allSEData:Object[] = [];
-            const SE_STEP:number = 500;
-            const SE_DURATION:number = 300;
+            const SE_STEP:number = 4000;
+            const SE_DURATION:number = 2600;
 
             for (let i:number = 0; i < 11; i++) {
                 let seData:Object = {
@@ -57,7 +57,7 @@ namespace project {
         * Tickerを開始
         * */
         private startTicker():void {
-            setInterval(() => this.tick(), 90);
+            setInterval(() => this.tick(), 200);
         }
 
         private tick() {
