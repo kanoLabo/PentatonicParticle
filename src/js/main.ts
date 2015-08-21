@@ -16,7 +16,6 @@ namespace project {
 
         public init():void {
             let soundManifest:Object[] = this.createSoundManifest();
-            createjs.Sound.registerSounds(soundManifest);
             this.startPreload(soundManifest);
         }
 

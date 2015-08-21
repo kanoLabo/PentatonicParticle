@@ -13,7 +13,6 @@ var project;
         }
         Main.prototype.init = function () {
             var soundManifest = this.createSoundManifest();
-            createjs.Sound.registerSounds(soundManifest);
             this.startPreload(soundManifest);
         };
         /*
