@@ -2,6 +2,8 @@
 /// <reference path="../typings/tweenjs/tweenjs.d.ts" />
 /// <reference path="../typings/easeljs/easeljs.d.ts" />
 /// <reference path="../typings/soundjs/soundjs.d.ts" />
+/// <reference path="particleCreator.ts" />
+
 
 createjs.Sound.initializeDefaultPlugins();
 
@@ -65,19 +67,7 @@ namespace project {
         }
 
         private loadComplete(event):void {
-            this.startTicker();
-        }
-
-        /*
-         * Tickerを開始
-         * */
-        private startTicker():void {
-            setInterval(() => this.tick(), 200);
-        }
-
-        private tick() {
-            var soundID:string = "se_" + Math.floor(Math.random() * 11);
-            createjs.Sound.play(soundID);
+            var particleCreator:project.ParticleCreator = new project.ParticleCreator();
         }
     }
 }

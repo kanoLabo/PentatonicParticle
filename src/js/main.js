@@ -2,6 +2,7 @@
 /// <reference path="../typings/tweenjs/tweenjs.d.ts" />
 /// <reference path="../typings/easeljs/easeljs.d.ts" />
 /// <reference path="../typings/soundjs/soundjs.d.ts" />
+/// <reference path="particleCreator.ts" />
 createjs.Sound.initializeDefaultPlugins();
 var project;
 (function (project) {
@@ -59,18 +60,7 @@ var project;
             return allSEData;
         };
         Main.prototype.loadComplete = function (event) {
-            this.startTicker();
-        };
-        /*
-         * Tickerを開始
-         * */
-        Main.prototype.startTicker = function () {
-            var _this = this;
-            setInterval(function () { return _this.tick(); }, 200);
-        };
-        Main.prototype.tick = function () {
-            var soundID = "se_" + Math.floor(Math.random() * 11);
-            createjs.Sound.play(soundID);
+            var particleCreator = new project.ParticleCreator();
         };
         return Main;
     })();
