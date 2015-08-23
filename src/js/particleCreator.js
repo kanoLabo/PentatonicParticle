@@ -16,7 +16,8 @@ var project;
         function ParticleCreator() {
             var _this = this;
             // ステージを準備
-            this._stage = new createjs.Stage(document.getElementById("myCanvas"));
+            this._canvas = document.getElementById("myCanvas");
+            this._stage = new createjs.Stage(this._canvas);
             // タッチ対応
             if (createjs.Touch.isSupported()) {
                 createjs.Touch.enable(this._stage);
@@ -46,8 +47,8 @@ var project;
             var windowWidth = window.innerWidth;
             var windowHeight = window.innerHeight;
             // ステージのサイズをwindowのサイズに変更
-            //this._stage.canvas.width = windowWidth;
-            //this._stage.canvas.height = windowHeight;
+            this._canvas.width = windowWidth;
+            this._canvas.height = windowHeight;
             // メインレイヤーにリサイズイベントを通知
             this._mainLayer.resizeHandler(windowWidth, windowHeight);
         };

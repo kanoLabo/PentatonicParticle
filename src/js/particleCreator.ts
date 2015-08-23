@@ -9,11 +9,14 @@ namespace project {
      * */
     export class ParticleCreator {
         private _stage:createjs.Stage;  // ステージ
+        private _canvas:HTMLCanvasElement;  // ステージ
+
         private _mainLayer:MainLayer;   // メインのレイヤー
 
         public constructor() {
             // ステージを準備
-            this._stage = new createjs.Stage(document.getElementById("myCanvas"));
+            this._canvas = <HTMLCanvasElement> document.getElementById("myCanvas")
+            this._stage = new createjs.Stage(this._canvas);
 
             // タッチ対応
             if (createjs.Touch.isSupported()) {
@@ -47,8 +50,8 @@ namespace project {
             var windowWidth:number = window.innerWidth;
             var windowHeight:number = window.innerHeight;
             // ステージのサイズをwindowのサイズに変更
-            //this._stage.canvas.width = windowWidth;
-            //this._stage.canvas.height = windowHeight;
+            this._canvas.width = windowWidth;
+            this._canvas.height = windowHeight;
             // メインレイヤーにリサイズイベントを通知
             this._mainLayer.resizeHandler(windowWidth, windowHeight);
         }
