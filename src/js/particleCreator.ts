@@ -227,11 +227,11 @@ namespace project {
             else {
                 // アイコンの Unicode を指定
                 var iconUnicode = "f001";
-// Unicode から文字コードに変換
+                // Unicode から文字コードに変換
                 var iconInt = parseInt(iconUnicode, 16);
-// 文字コードから文字列に変換する
+                // 文字コードから文字列に変換する
                 var iconStr = String.fromCharCode(iconInt);
-// CreateJS のテキストを作成
+                // CreateJS のテキストを作成
                 return new Particle(iconStr);
             }
         }
@@ -284,7 +284,6 @@ namespace project {
             this.isDead = false;
             this.alpha = 1;
             this.rotation = 20 * Math.PI * (Math.random() - 0.5);
-            var size:number = 30 + Math.random() * 20;
             var colorHSL:string = createjs.Graphics.getHSL(
                 new Date().getTime() / 20 + Math.random() * 5,
                 100,

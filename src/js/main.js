@@ -3,6 +3,7 @@
 /// <reference path="../typings/easeljs/easeljs.d.ts" />
 /// <reference path="../typings/soundjs/soundjs.d.ts" />
 /// <reference path="particleCreator.ts" />
+/// <reference path="createAudioSpriteManifestTask.ts" />
 createjs.Sound.initializeDefaultPlugins();
 var project;
 (function (project) {
@@ -12,7 +13,8 @@ var project;
             createjs.Sound.alternateExtensions = ["mp3"]; // add other extensions to try loading if the src file extension is not supported
         }
         Main.prototype.init = function () {
-            var soundManifest = this.createSoundManifest();
+            var createSoundManifestTask = new project.CreateAudioSpriteManifestTask();
+            var soundManifest = createSoundManifestTask.getSoundManifest();
             this.startPreload(soundManifest);
         };
         /*
@@ -24,39 +26,6 @@ var project;
             queue.installPlugin(createjs.Sound);
             queue.addEventListener("complete", function (event) { return _this.loadComplete(event); });
             queue.loadManifest(soundManifest);
-        };
-        /*
-         * Soundファイル用マニフェストを作成する
-         * */
-        Main.prototype.createSoundManifest = function () {
-            var audioSpriteData = this.prepareSE();
-            var manifest = [
-                {
-                    src: "sounds/150821_1_01.ogg",
-                    data: {
-                        channels: 50,
-                        audioSprite: audioSpriteData
-                    }
-                }
-            ];
-            return manifest;
-        };
-        /*
-         * SEデータを準備する
-         * */
-        Main.prototype.prepareSE = function () {
-            var allSEData = [];
-            var SE_STEP = 4000;
-            var SE_DURATION = 2600;
-            for (var i = 0; i < 11; i++) {
-                var seData = {
-                    id: "se_" + i,
-                    startTime: SE_STEP * i,
-                    duration: SE_DURATION
-                };
-                allSEData[i] = seData;
-            }
-            return allSEData;
         };
         Main.prototype.loadComplete = function (event) {
             var particleCreator = new project.ParticleCreator();

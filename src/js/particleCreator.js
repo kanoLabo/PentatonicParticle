@@ -253,7 +253,6 @@ var project;
             this.isDead = false;
             this.alpha = 1;
             this.rotation = 20 * Math.PI * (Math.random() - 0.5);
-            var size = 30 + Math.random() * 20;
             var colorHSL = createjs.Graphics.getHSL(new Date().getTime() / 20 + Math.random() * 5, 100, 50);
             this.color = colorHSL;
         };
