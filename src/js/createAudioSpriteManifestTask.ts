@@ -2,7 +2,7 @@ namespace project {
 
     /*
     *
-    * AudioSpriteのためのSoundManifestをつくるためのタスク
+    * AudioSprite用のSoundManifestをつくるためのタスク
     *
     */
     export class CreateAudioSpriteManifestTask

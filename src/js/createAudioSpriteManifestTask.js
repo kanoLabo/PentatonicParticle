@@ -2,7 +2,7 @@ var project;
 (function (project) {
     /*
     *
-    * AudioSpriteのためのSoundManifestをつくるためのタスク
+    * AudioSprite用のSoundManifestをつくるためのタスク
     *
     */
     var CreateAudioSpriteManifestTask = (function () {
