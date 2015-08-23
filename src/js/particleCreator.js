@@ -77,8 +77,8 @@ var project;
             this.drawBG(windowWidth, windowHeight);
         };
         /*
-        * 指定の大きさの背景を描画
-        * */
+         * 指定の大きさの背景を描画
+         * */
         MainLayer.prototype.drawBG = function (bgWidth, bgHeight) {
             this._bg.graphics.clear();
             this._bg.graphics.beginLinearGradientFill(["#001529", "#000911"], [0, 1], 0, 0, 0, bgHeight)
@@ -86,8 +86,8 @@ var project;
                 .endFill();
         };
         /*
-        * マウスを押した時の処理
-        * */
+         * マウスを押した時の処理
+         * */
         MainLayer.prototype.mouseDownHandler = function (event) {
             this._isMouseDown = true;
         };
@@ -135,8 +135,8 @@ var project;
             this._vy = 0;
         }
         /*
-        * MainLayerのtickイベント毎に実行される処理
-        * */
+         * MainLayerのtickイベント毎に実行される処理
+         * */
         ParticleEmitter.prototype.update = function (goalX, goalY) {
             // 発生装置はgoalに徐々に近づいていく。
             var dx = goalX - this._emitX;
@@ -164,9 +164,27 @@ var project;
          *　パーティクルのアニメーション
          * */
         ParticleEmitter.prototype.updateParticles = function () {
+            var windowWidth = window.innerWidth;
+            var windowHeight = window.innerHeight;
             for (var i = 0; i < this._animationParticles.length; i++) {
                 var particle = this._animationParticles[i];
                 if (!particle.isDead) {
+                    if (particle.y >= windowHeight) {
+                        particle.vy *= -0.9;
+                        particle.y = windowHeight;
+                    }
+                    else if (particle.y <= 0) {
+                        particle.vy *= -0.9;
+                        particle.y = 0;
+                    }
+                    if (particle.x >= windowWidth) {
+                        particle.vx *= -0.9;
+                        particle.x = windowWidth;
+                    }
+                    else if (particle.x <= 0) {
+                        particle.vx *= -0.9;
+                        particle.x = 0;
+                    }
                     particle.update();
                 }
                 else {
@@ -230,8 +248,8 @@ var project;
             this.y = emitY;
             this._life = 70 + Math.random() * 20;
             this._count = 0;
-            this._vx = parentVX + (Math.random() - 0.5) * 4;
-            this._vy = parentVY + 4 + Math.random() * 2;
+            this.vx = parentVX + (Math.random() - 0.5) * 4;
+            this.vy = parentVY + 4 + Math.random() * 2;
             this.isDead = false;
             this.alpha = 1;
             this.rotation = 20 * Math.PI * (Math.random() - 0.5);
@@ -248,9 +266,9 @@ var project;
         Particle.prototype.update = function () {
             this._count++;
             if (this._count <= this._life) {
-                this.x += this._vx;
-                this._vy -= 0.5;
-                this.y += this._vy;
+                this.x += this.vx;
+                this.vy -= 0.5;
+                this.y += this.vy;
                 // 死にそうになったら点滅を開始
                 if (this._count >= this._life / 2) {
                     // this.alpha = 0.6 + Math.random() * 0.4;

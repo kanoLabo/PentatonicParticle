@@ -84,19 +84,18 @@ namespace project {
         }
 
         /*
-        * 指定の大きさの背景を描画
-        * */
-        private drawBG(bgWidth:number, bgHeight:number):void
-        {
+         * 指定の大きさの背景を描画
+         * */
+        private drawBG(bgWidth:number, bgHeight:number):void {
             this._bg.graphics.clear();
-            this._bg.graphics.beginLinearGradientFill(["#001529", "#000911"], [0, 1], 0,0,0,bgHeight)
+            this._bg.graphics.beginLinearGradientFill(["#001529", "#000911"], [0, 1], 0, 0, 0, bgHeight)
                 .drawRect(0, 0, bgWidth, bgHeight)
                 .endFill();
         }
 
         /*
-        * マウスを押した時の処理
-        * */
+         * マウスを押した時の処理
+         * */
         private mouseDownHandler(event):void {
             this._isMouseDown = true;
         }
@@ -156,8 +155,8 @@ namespace project {
         }
 
         /*
-        * MainLayerのtickイベント毎に実行される処理
-        * */
+         * MainLayerのtickイベント毎に実行される処理
+         * */
         public update(goalX:number, goalY:number) {
             // 発生装置はgoalに徐々に近づいていく。
             var dx:number = goalX - this._emitX;
@@ -187,9 +186,27 @@ namespace project {
          *　パーティクルのアニメーション
          * */
         private updateParticles():void {
+            let windowWidth:number = window.innerWidth;
+            let windowHeight:number = window.innerHeight;
+
             for (var i:number = 0; i < this._animationParticles.length; i++) {
                 var particle:Particle = this._animationParticles[i];
                 if (!particle.isDead) {
+                    if (particle.y >= windowHeight) {
+                        particle.vy *= -0.9;
+                        particle.y = windowHeight;
+                    } else if (particle.y <= 0) {
+                        particle.vy *= -0.9;
+                        particle.y = 0;
+                    }
+                    if (particle.x >= windowWidth) {
+                        particle.vx *= -0.9;
+                        particle.x = windowWidth;
+                    } else if (particle.x <= 0) {
+                        particle.vx *= -0.9;
+                        particle.x = 0;
+                    }
+
                     particle.update();
                 }
                 else {
@@ -240,11 +257,11 @@ namespace project {
     class Particle extends createjs.Text {
         private _life:number;   // パーティクルの寿命
         private _count:number;  // パーティクルの年齢。時間経過とともに加算されていく。
-        private _vx:number; // 速度X
-        private _vy:number; // 速度Y
+        public vx:number; // 速度X
+        public vy:number; // 速度Y
         public isDead:boolean;  // パーティクルが寿命を迎えたかどうか。
 
-        public constructor(text: string) {
+        public constructor(text:string) {
             let fontSize:number = 12 + Math.floor(30 * Math.random());
             super(text, fontSize + "px FontAwesome");
 
@@ -262,8 +279,8 @@ namespace project {
             this.y = emitY;
             this._life = 70 + Math.random() * 20;
             this._count = 0;
-            this._vx = parentVX + (Math.random() - 0.5) * 4;
-            this._vy = parentVY + 4 + Math.random() * 2;
+            this.vx = parentVX + (Math.random() - 0.5) * 4;
+            this.vy = parentVY + 4 + Math.random() * 2;
             this.isDead = false;
             this.alpha = 1;
             this.rotation = 20 * Math.PI * (Math.random() - 0.5);
@@ -285,9 +302,9 @@ namespace project {
         update():void {
             this._count++;
             if (this._count <= this._life) {
-                this.x += this._vx;
-                this._vy -= 0.5;
-                this.y += this._vy;
+                this.x += this.vx;
+                this.vy -= 0.5;
+                this.y += this.vy;
 
                 // 死にそうになったら点滅を開始
                 if (this._count >= this._life / 2) {
