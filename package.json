@@ -1,0 +1,24 @@
+{
+  "name": "PentatonicParticle",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {},
+  "devDependencies": {
+    "browser-sync": "^2.8.2",
+    "gulp": "^3.9.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://kanoLabo@github.com/kanoLabo/PentatonicParticle.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kanoLabo/PentatonicParticle/issues"
+  },
+  "homepage": "https://github.com/kanoLabo/PentatonicParticle"
+}
