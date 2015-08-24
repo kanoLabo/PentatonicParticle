@@ -32,6 +32,7 @@ namespace project {
 
         private loadComplete(event):void {
             var particleCreator:project.ParticleCreator = new project.ParticleCreator();
+            createjs.Sound.play("bgm", {loop:-1, pan:0.01});
         }
     }
 }

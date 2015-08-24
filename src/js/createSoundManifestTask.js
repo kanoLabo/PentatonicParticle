@@ -17,13 +17,19 @@ var project;
          * */
         CreateSoundManifestTask.prototype.createSoundManifest = function () {
             var manifest = [];
-            for (var i = 0; i < 11; i++) {
+            var SE_NUM = 11;
+            for (var i = 0; i < SE_NUM; i++) {
                 var seData = {
                     id: "se_" + i,
                     src: "sounds/se_" + i + ".ogg"
                 };
                 manifest[i] = seData;
             }
+            manifest[SE_NUM] = {
+                id: "bgm",
+                src: "sounds/bgm.ogg",
+                duration: 16 * 1000
+            };
             return manifest;
         };
         return CreateSoundManifestTask;

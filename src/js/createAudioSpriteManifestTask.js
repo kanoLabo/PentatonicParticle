@@ -19,7 +19,7 @@ var project;
             var audioSpriteData = this.prepareSE();
             var manifest = [
                 {
-                    src: "sounds/150821_1_01.ogg",
+                    src: "sounds/150824.ogg",
                     data: {
                         channels: 50,
                         audioSprite: audioSpriteData
@@ -33,9 +33,10 @@ var project;
          * */
         CreateAudioSpriteManifestTask.prototype.prepareSE = function () {
             var allSEData = [];
+            var SE_NUM = 11;
             var SE_STEP = 4000;
             var SE_DURATION = 2600;
-            for (var i = 0; i < 11; i++) {
+            for (var i = 0; i < SE_NUM; i++) {
                 var seData = {
                     id: "se_" + i,
                     startTime: SE_STEP * i,
@@ -43,6 +44,11 @@ var project;
                 };
                 allSEData[i] = seData;
             }
+            allSEData[SE_NUM] = {
+                id: "bgm",
+                startTime: SE_STEP * SE_NUM,
+                duration: 16 * 1000
+            };
             return allSEData;
         };
         return CreateAudioSpriteManifestTask;

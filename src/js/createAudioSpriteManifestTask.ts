@@ -23,7 +23,7 @@ namespace project {
             let audioSpriteData:Object[] = this.prepareSE();
             let manifest:Object[] = [
                 {
-                    src: "sounds/150821_1_01.ogg",
+                    src: "sounds/150824.ogg",
                     data: {
                         channels: 50,
                         audioSprite: audioSpriteData
@@ -38,10 +38,11 @@ namespace project {
          * */
         private prepareSE():Object[] {
             let allSEData:Object[] = [];
+            const SE_NUM:number = 11;
             const SE_STEP:number = 4000;
             const SE_DURATION:number = 2600;
 
-            for (let i:number = 0; i < 11; i++) {
+            for (let i:number = 0; i < SE_NUM; i++) {
                 let seData:Object = {
                     id: "se_" + i,
                     startTime: SE_STEP * i,
@@ -49,6 +50,13 @@ namespace project {
                 };
                 allSEData[i] = seData;
             }
+
+            allSEData[SE_NUM] = {
+                id: "bgm",
+                startTime: SE_STEP * SE_NUM,
+                duration: 16 * 1000
+            }
+
             return allSEData;
         }
     }
