@@ -25,6 +25,7 @@ var project;
             var queue = new createjs.LoadQueue();
             queue.installPlugin(createjs.Sound);
             queue.addEventListener("complete", function (event) { return _this.loadComplete(event); });
+            queue.setMaxConnections(12);
             queue.loadManifest(soundManifest);
         };
         Main.prototype.loadComplete = function (event) {

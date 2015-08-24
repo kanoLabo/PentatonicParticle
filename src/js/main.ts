@@ -27,6 +27,7 @@ namespace project {
             let queue:createjs.LoadQueue = new createjs.LoadQueue();
             queue.installPlugin(createjs.Sound);
             queue.addEventListener("complete", (event) => this.loadComplete(event));
+            queue.setMaxConnections(12);
             queue.loadManifest(soundManifest);
         }
 
