@@ -112,7 +112,7 @@ var project;
                 // 5フレームに1回処理
                 if (this._cntTick++ % 7 == 0) {
                     var soundID = "se_" + Math.floor(Math.random() * 11);
-                    createjs.Sound.play(soundID);
+                    createjs.Sound.play(soundID, { pan: 0.01 });
                 }
             }
         };
