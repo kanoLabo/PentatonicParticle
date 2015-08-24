@@ -10,7 +10,7 @@ var __extends = (this && this.__extends) || function (d, b) {
 var project;
 (function (project) {
     /*
-     * メインのクラス
+     * パーティクルモーションのクラス
      * */
     var ParticleCreator = (function () {
         function ParticleCreator() {
@@ -81,7 +81,7 @@ var project;
          * */
         MainLayer.prototype.drawBG = function (bgWidth, bgHeight) {
             this._bg.graphics.clear();
-            this._bg.graphics.beginLinearGradientFill(["#001529", "#000911"], [0, 1], 0, 0, 0, bgHeight)
+            this._bg.graphics.beginLinearGradientFill(["#011c31", "#001121"], [0, 1], 0, 0, 0, bgHeight)
                 .drawRect(0, 0, bgWidth, bgHeight)
                 .endFill();
         };

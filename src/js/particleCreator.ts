@@ -5,7 +5,7 @@
 
 namespace project {
     /*
-     * メインのクラス
+     * パーティクルモーションのクラス
      * */
     export class ParticleCreator {
         private _stage:createjs.Stage;  // ステージ
@@ -88,7 +88,7 @@ namespace project {
          * */
         private drawBG(bgWidth:number, bgHeight:number):void {
             this._bg.graphics.clear();
-            this._bg.graphics.beginLinearGradientFill(["#001529", "#000911"], [0, 1], 0, 0, 0, bgHeight)
+            this._bg.graphics.beginLinearGradientFill(["#011c31", "#001121"], [0, 1], 0, 0, 0, bgHeight)
                 .drawRect(0, 0, bgWidth, bgHeight)
                 .endFill();
         }
