@@ -4,6 +4,7 @@
 /// <reference path="../typings/soundjs/soundjs.d.ts" />
 /// <reference path="particleCreator.ts" />
 /// <reference path="createSoundManifestTask.ts" />
+/// <reference path="trace.ts" />
 
 createjs.Sound.initializeDefaultPlugins();
 
@@ -22,7 +23,7 @@ namespace project {
 
         /*
          * プリロードを開始する
-         * */
+         */
         private startPreload(soundManifest:Object[]):void {
             let queue:createjs.LoadQueue = new createjs.LoadQueue();
             queue.installPlugin(createjs.Sound);
@@ -37,28 +38,7 @@ namespace project {
         }
     }
 }
-
-
-/** デバッグモードかどうか。本番公開時にはfalseにする */
-let DEBUG_MODE:boolean = true;
-
-/**
- * デバッグモードが有効で、console.log()が使える時に、
- * コンソールに文字列を出力します。
- * @param {string[]} ...args 出力したい文字列です。
- */
-function trace(...args:string[]):void {
-    if (DEBUG_MODE && this.console && typeof console.log != "undefined") {
-        let str:string = "";
-        if (args.length > 0)
-            str = args.join(", ");
-
-        console.log(str);
-    }
-}
-
 window.addEventListener("load", (event)=> {
     var main:project.Main = new project.Main();
     main.init();
-
 });
