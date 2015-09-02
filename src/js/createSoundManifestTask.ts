@@ -1,3 +1,5 @@
+/// <reference path="param.ts" />
+
 namespace project {
     /*
     *
@@ -6,10 +8,6 @@ namespace project {
     */
     export class CreateSoundManifestTask
     {
-        constructor()
-        {
-        }
-
         public getSoundManifest():Object[] {
             let soundManifest:Object[] = this.createSoundManifest();
             return soundManifest;
@@ -20,20 +18,19 @@ namespace project {
          * */
         private createSoundManifest():Object[] {
             let manifest:Object[] = [];
-            const SE_NUM:number = 11;
 
-            for (let i:number = 0; i < SE_NUM; i++) {
+            for (let i:number = 0; i < Param.SE_NUM; i++) {
                 let seData:Object = {
                     id: "se_" + i,
-                    src: "sounds/se_" + i + ".ogg"
+                    src: Param.SOUNDS_FOLDER + "se_" + i + ".ogg"
                 };
                 manifest[i] = seData;
             }
 
-            manifest[SE_NUM] = {
-                id: "bgm",
-                src: "sounds/bgm.ogg",
-                duration: 16 * 1000
+            manifest[Param.SE_NUM] = {
+                id: Param.BGM_ID,
+                src: Param.SOUNDS_FOLDER + "bgm.ogg",
+                duration: Param.BGM_DURATION
             };
 
             return manifest;

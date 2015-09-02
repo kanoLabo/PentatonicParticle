@@ -26,12 +26,12 @@ var project;
             var queue = new createjs.LoadQueue();
             queue.installPlugin(createjs.Sound);
             queue.addEventListener("complete", function (event) { return _this.loadComplete(event); });
-            queue.setMaxConnections(6);
+            queue.setMaxConnections(1);
             queue.loadManifest(soundManifest);
         };
         Main.prototype.loadComplete = function (event) {
             var particleCreator = new project.ParticleCreator();
-            createjs.Sound.play("bgm", { loop: -1, pan: 0.01 });
+            createjs.Sound.play(project.Param.BGM_ID, { loop: -1, pan: 0.01 });
         };
         return Main;
     })();

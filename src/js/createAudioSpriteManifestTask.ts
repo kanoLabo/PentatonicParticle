@@ -1,3 +1,4 @@
+/// <reference path="param.ts" />
 namespace project {
 
     /*
@@ -7,9 +8,8 @@ namespace project {
     */
     export class CreateAudioSpriteManifestTask
     {
-        constructor()
-        {
-        }
+
+        private AUDIO_FILE:string = "150901.ogg";
 
         public getSoundManifest():Object[] {
             let soundManifest:Object[] = this.createSoundManifest();
@@ -23,9 +23,9 @@ namespace project {
             let audioSpriteData:Object[] = this.prepareSE();
             let manifest:Object[] = [
                 {
-                    src: "sounds/150901.ogg",
+                    src: Param.SOUNDS_FOLDER + this.AUDIO_FILE,
                     data: {
-                        channels: 50,
+                        channels: Param.SOUNDS_CHANNEL,
                         audioSprite: audioSpriteData
                     }
                 }
@@ -38,23 +38,20 @@ namespace project {
          * */
         private prepareSE():Object[] {
             let allSEData:Object[] = [];
-            const SE_NUM:number = 21;
-            const SE_STEP:number = 4000;
-            const SE_DURATION:number = 2600;
 
-            for (let i:number = 0; i < SE_NUM; i++) {
+            for (let i:number = 0; i < Param.SE_NUM; i++) {
                 let seData:Object = {
                     id: "se_" + i,
-                    startTime: SE_STEP * i,
-                    duration: SE_DURATION
+                    startTime: Param.SE_STEP * i,
+                    duration: Param.SE_DURATION
                 };
                 allSEData[i] = seData;
             }
 
-            allSEData[SE_NUM] = {
-                id: "bgm",
-                startTime: SE_STEP * SE_NUM,
-                duration: 16 * 1000
+            allSEData[Param.SE_NUM] = {
+                id: Param.BGM_ID,
+                startTime: Param.SE_STEP * Param.SE_NUM,
+                duration: Param.BGM_DURATION
             }
 
             return allSEData;

@@ -2,6 +2,7 @@
 /// <reference path="../typings/tweenjs/tweenjs.d.ts" />
 /// <reference path="../typings/easeljs/easeljs.d.ts" />
 /// <reference path="../typings/soundjs/soundjs.d.ts" />
+/// <reference path="param.ts" />
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
@@ -111,7 +112,7 @@ var project;
                 this._particleEmitter.emitParticle();
                 // 5フレームに1回処理
                 if (this._cntTick++ % 7 == 0) {
-                    var soundID = "se_" + Math.floor(Math.random() * 21);
+                    var soundID = "se_" + Math.floor(Math.random() * project.Param.SE_NUM);
                     createjs.Sound.play(soundID, { pan: 0.01 });
                 }
             }

@@ -2,6 +2,7 @@
 /// <reference path="../typings/tweenjs/tweenjs.d.ts" />
 /// <reference path="../typings/easeljs/easeljs.d.ts" />
 /// <reference path="../typings/soundjs/soundjs.d.ts" />
+/// <reference path="param.ts" />
 
 namespace project {
     /*
@@ -124,7 +125,7 @@ namespace project {
 
                 // 5フレームに1回処理
                 if (this._cntTick++ % 7 == 0) {
-                    var soundID:string = "se_" + Math.floor(Math.random() * 21);
+                    var soundID:string = "se_" + Math.floor(Math.random() * Param.SE_NUM);
                     createjs.Sound.play(soundID, {pan: 0.01});
                 }
             }

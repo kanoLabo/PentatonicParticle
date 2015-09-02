@@ -1,3 +1,4 @@
+/// <reference path="param.ts" />
 var project;
 (function (project) {
     /*
@@ -7,6 +8,7 @@ var project;
     */
     var CreateAudioSpriteManifestTask = (function () {
         function CreateAudioSpriteManifestTask() {
+            this.AUDIO_FILE = "150901.ogg";
         }
         CreateAudioSpriteManifestTask.prototype.getSoundManifest = function () {
             var soundManifest = this.createSoundManifest();
@@ -19,9 +21,9 @@ var project;
             var audioSpriteData = this.prepareSE();
             var manifest = [
                 {
-                    src: "sounds/150901.ogg",
+                    src: project.Param.SOUNDS_FOLDER + this.AUDIO_FILE,
                     data: {
-                        channels: 50,
+                        channels: project.Param.SOUNDS_CHANNEL,
                         audioSprite: audioSpriteData
                     }
                 }
@@ -33,21 +35,18 @@ var project;
          * */
         CreateAudioSpriteManifestTask.prototype.prepareSE = function () {
             var allSEData = [];
-            var SE_NUM = 21;
-            var SE_STEP = 4000;
-            var SE_DURATION = 2600;
-            for (var i = 0; i < SE_NUM; i++) {
+            for (var i = 0; i < project.Param.SE_NUM; i++) {
                 var seData = {
                     id: "se_" + i,
-                    startTime: SE_STEP * i,
-                    duration: SE_DURATION
+                    startTime: project.Param.SE_STEP * i,
+                    duration: project.Param.SE_DURATION
                 };
                 allSEData[i] = seData;
             }
-            allSEData[SE_NUM] = {
-                id: "bgm",
-                startTime: SE_STEP * SE_NUM,
-                duration: 16 * 1000
+            allSEData[project.Param.SE_NUM] = {
+                id: project.Param.BGM_ID,
+                startTime: project.Param.SE_STEP * project.Param.SE_NUM,
+                duration: project.Param.BGM_DURATION
             };
             return allSEData;
         };

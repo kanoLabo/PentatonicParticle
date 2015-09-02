@@ -28,13 +28,13 @@ namespace project {
             let queue:createjs.LoadQueue = new createjs.LoadQueue();
             queue.installPlugin(createjs.Sound);
             queue.addEventListener("complete", (event) => this.loadComplete(event));
-            queue.setMaxConnections(6);
+            queue.setMaxConnections(1);
             queue.loadManifest(soundManifest);
         }
 
         private loadComplete(event):void {
             var particleCreator:project.ParticleCreator = new project.ParticleCreator();
-            createjs.Sound.play("bgm", {loop:-1, pan:0.01});
+            createjs.Sound.play(Param.BGM_ID, {loop:-1, pan:0.01});
         }
     }
 }
