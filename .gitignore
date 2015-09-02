@@ -1,2 +1,5 @@
 *.js.map
 *.css.map
+main_nosprite.js.map
+main.js.map
+particleCreator.js.map
