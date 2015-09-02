@@ -19,7 +19,7 @@ var project;
             var audioSpriteData = this.prepareSE();
             var manifest = [
                 {
-                    src: "sounds/150824.ogg",
+                    src: "sounds/150901.ogg",
                     data: {
                         channels: 50,
                         audioSprite: audioSpriteData
@@ -33,7 +33,7 @@ var project;
          * */
         CreateAudioSpriteManifestTask.prototype.prepareSE = function () {
             var allSEData = [];
-            var SE_NUM = 11;
+            var SE_NUM = 21;
             var SE_STEP = 4000;
             var SE_DURATION = 2600;
             for (var i = 0; i < SE_NUM; i++) {

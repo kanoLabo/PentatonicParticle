@@ -23,7 +23,7 @@ namespace project {
             let audioSpriteData:Object[] = this.prepareSE();
             let manifest:Object[] = [
                 {
-                    src: "sounds/150824.ogg",
+                    src: "sounds/150901.ogg",
                     data: {
                         channels: 50,
                         audioSprite: audioSpriteData
@@ -38,7 +38,7 @@ namespace project {
          * */
         private prepareSE():Object[] {
             let allSEData:Object[] = [];
-            const SE_NUM:number = 11;
+            const SE_NUM:number = 21;
             const SE_STEP:number = 4000;
             const SE_DURATION:number = 2600;
 

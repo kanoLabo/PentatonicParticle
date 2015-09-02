@@ -124,8 +124,8 @@ namespace project {
 
                 // 5フレームに1回処理
                 if (this._cntTick++ % 7 == 0) {
-                    var soundID:string = "se_" + Math.floor(Math.random() * 11);
-                    createjs.Sound.play(soundID, {pan:0.01});
+                    var soundID:string = "se_" + Math.floor(Math.random() * 21);
+                    createjs.Sound.play(soundID, {pan: 0.01});
                 }
             }
         }
@@ -175,11 +175,14 @@ namespace project {
          *　パーティクルを発生させる
          * */
         public emitParticle():void {
-            var particle:Particle = this.getParticle();
-            particle.init(this._emitX, this._emitY, this._vx, this._vy);
-            this.addChild(particle);
-            // アニメーション中のパーティクルとして設定
-            this._animationParticles.push(particle);
+            for(var i:number = 0; i < 2; i++)
+            {
+                var particle:Particle = this.getParticle();
+                particle.init(this._emitX, this._emitY, this._vx, this._vy);
+                this.addChild(particle);
+                // アニメーション中のパーティクルとして設定
+                this._animationParticles.push(particle);
+            }
         }
 
         /*
@@ -225,16 +228,10 @@ namespace project {
                 return this._particlePool.shift();
             }
             else {
-                // アイコンの Unicode を指定
-                var iconUnicode = "f001";
-                // Unicode から文字コードに変換
-                var iconInt = parseInt(iconUnicode, 16);
-                // 文字コードから文字列に変換する
-                var iconStr = String.fromCharCode(iconInt);
-                // CreateJS のテキストを作成
-                return new Particle(iconStr);
+                return new Particle();
             }
         }
+
 
         /*
          * パーティクルを取り除く。
@@ -260,15 +257,42 @@ namespace project {
         public vx:number; // 速度X
         public vy:number; // 速度Y
         public isDead:boolean;  // パーティクルが寿命を迎えたかどうか。
+        private _isStar:boolean;  // ☆型パーティクルかどうか。
 
-        public constructor(text:string) {
-            let fontSize:number = 12 + Math.floor(30 * Math.random());
-            super(text, fontSize + "px FontAwesome");
+        public constructor() {
+            super("", "12px FontAwesome");
+            super("", 12 + Math.floor(50 * Math.random()) + "px FontAwesome");
+            this._isStar = Math.random() > 0.8;
+            let iconStr:string = this.getIconStr(this._isStar);
+            this.text = iconStr;
+            let iconSize:Number = this.getIconSize(this._isStar);
+            this.font = iconSize + "px FontAwesome";
 
             // 加算で重ねる
             this.compositeOperation = "lighter";
             this.mouseEnabled = false;
         }
+
+        private getIconSize(isStar:boolean):number {
+            if (!isStar)
+                return 12 + Math.floor(50 * Math.random())
+            else
+                return 8 + Math.floor(14 * Math.random())
+        }
+
+        private getIconStr(isStar:boolean):string {
+            // アイコンの Unicode を指定
+            var iconUnicode = !isStar ? "f001" : "f005";
+
+            // Unicode から文字コードに変換
+            var iconInt = parseInt(iconUnicode, 16);
+            // 文字コードから文字列に変換する
+            var iconStr = String.fromCharCode(iconInt);
+            // CreateJS のテキストを作成
+            return iconStr;
+
+        }
+
 
         /*
          * パーティクルの初期化
@@ -279,15 +303,15 @@ namespace project {
             this.y = emitY;
             this._life = 70 + Math.random() * 20;
             this._count = 0;
-            this.vx = parentVX + (Math.random() - 0.5) * 4;
-            this.vy = parentVY + 4 + Math.random() * 2;
+            this.vx = parentVX + (Math.random() - 0.5) * 6;
+            this.vy = parentVY - 6 - Math.random() * 6;
             this.isDead = false;
             this.alpha = 1;
-            this.rotation = 20 * Math.PI * (Math.random() - 0.5);
+            this.rotation = 50 * Math.PI * (Math.random() - 0.5);
             var colorHSL:string = createjs.Graphics.getHSL(
-                new Date().getTime() / 20 + Math.random() * 5,
-                100,
-                50
+                new Date().getTime() / 20 + Math.random() * 60,
+                90 + Math.random() * 10,
+                50 + Math.random() * 10
             );
             this.color = colorHSL;
         }
@@ -302,7 +326,7 @@ namespace project {
             this._count++;
             if (this._count <= this._life) {
                 this.x += this.vx;
-                this.vy -= 0.5;
+                this.vy += 0.5;
                 this.y += this.vy;
 
                 // 死にそうになったら点滅を開始
