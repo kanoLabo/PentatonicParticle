@@ -2,9 +2,7 @@
 var project;
 (function (project) {
     /*
-    *
     * AudioSprite用のSoundManifestをつくるためのタスク
-    *
     */
     var CreateAudioSpriteManifestTask = (function () {
         function CreateAudioSpriteManifestTask() {
@@ -16,7 +14,7 @@ var project;
         };
         /*
          * Soundファイル用マニフェストを作成する
-         * */
+         */
         CreateAudioSpriteManifestTask.prototype.createSoundManifest = function () {
             var audioSpriteData = this.prepareSE();
             var manifest = [
@@ -32,7 +30,7 @@ var project;
         };
         /*
          * SEデータを準備する
-         * */
+         */
         CreateAudioSpriteManifestTask.prototype.prepareSE = function () {
             var allSEData = [];
             for (var i = 0; i < project.Param.SE_NUM; i++) {

@@ -2,9 +2,7 @@
 namespace project {
 
     /*
-    *
     * AudioSprite用のSoundManifestをつくるためのタスク
-    *
     */
     export class CreateAudioSpriteManifestTask
     {
@@ -18,7 +16,7 @@ namespace project {
 
         /*
          * Soundファイル用マニフェストを作成する
-         * */
+         */
         private createSoundManifest():Object[] {
             let audioSpriteData:Object[] = this.prepareSE();
             let manifest:Object[] = [
@@ -35,7 +33,7 @@ namespace project {
 
         /*
          * SEデータを準備する
-         * */
+         */
         private prepareSE():Object[] {
             let allSEData:Object[] = [];
 

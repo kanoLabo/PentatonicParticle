@@ -20,7 +20,7 @@ var project;
         };
         /*
          * プリロードを開始する
-         * */
+         */
         Main.prototype.startPreload = function (soundManifest) {
             var _this = this;
             var queue = new createjs.LoadQueue();

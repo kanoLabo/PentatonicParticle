@@ -24,7 +24,7 @@ namespace project {
 
         /*
          * プリロードを開始する
-         * */
+         */
         private startPreload(soundManifest:Object[]):void {
             let queue:createjs.LoadQueue = new createjs.LoadQueue();
             queue.installPlugin(createjs.Sound);

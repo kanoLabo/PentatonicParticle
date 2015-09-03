@@ -2,9 +2,7 @@
 
 namespace project {
     /*
-    *
     * 各オーディオファイル用のSoundManifestをつくるためのタスク
-    *
     */
     export class CreateSoundManifestTask
     {
@@ -15,7 +13,7 @@ namespace project {
 
         /*
          * Soundファイル用マニフェストを作成する
-         * */
+         */
         private createSoundManifest():Object[] {
             let manifest:Object[] = [];
 

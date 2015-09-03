@@ -2,9 +2,7 @@
 var project;
 (function (project) {
     /*
-    *
     * 各オーディオファイル用のSoundManifestをつくるためのタスク
-    *
     */
     var CreateSoundManifestTask = (function () {
         function CreateSoundManifestTask() {
@@ -15,7 +13,7 @@ var project;
         };
         /*
          * Soundファイル用マニフェストを作成する
-         * */
+         */
         CreateSoundManifestTask.prototype.createSoundManifest = function () {
             var manifest = [];
             for (var i = 0; i < project.Param.SE_NUM; i++) {
