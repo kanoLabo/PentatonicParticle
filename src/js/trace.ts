@@ -7,7 +7,7 @@ namespace project {
      * コンソールに文字列を出力します。
      * @param {string[]} ...args 出力したい文字列です。
      */
-    export function trace(...args:string[]):void {
+    export function trace(...args:any[]):void {
         if (DEBUG_MODE && window.console && typeof window.console.log != "undefined") {
             let str:string = "";
             if (args.length > 0)
