@@ -4,21 +4,33 @@
 /// <reference path="../typings/soundjs/soundjs.d.ts" />
 /// <reference path="particleCreator.ts" />
 /// <reference path="createAudioSpriteManifestTask.ts" />
+/// <reference path="createSoundManifestTask.ts" />
 /// <reference path="trace.ts" />
 
 createjs.Sound.initializeDefaultPlugins();
-
+declare var isAudioSprite:boolean;
 namespace project {
 
     export class Main {
         constructor() {
-            trace("Active Plugin is", createjs.Sound.activePlugin.toString());
             createjs.Sound.alternateExtensions = ["mp3"];	// add other extensions to try loading if the src file extension is not supported
         }
 
         public init():void {
-            let createSoundManifestTask:project.CreateAudioSpriteManifestTask = new project.CreateAudioSpriteManifestTask();
-            let soundManifest:Object[] = createSoundManifestTask.getSoundManifest();
+            let soundManifest:Object[];
+
+            if (isAudioSprite)
+            {
+                let createSoundManifestTask:project.CreateAudioSpriteManifestTask = new project.CreateAudioSpriteManifestTask();
+                soundManifest = createSoundManifestTask.getSoundManifest();
+            }
+            else
+            {
+                let createSoundManifestTask:project.CreateSoundManifestTask = new project.CreateSoundManifestTask();
+                soundManifest = createSoundManifestTask.getSoundManifest();
+            }
+            trace("isAudioSprite", isAudioSprite, "Plugin is", createjs.Sound.activePlugin.toString());
+
             this.startPreload(soundManifest);
         }
 
@@ -39,7 +51,6 @@ namespace project {
         }
     }
 }
-
 
 window.addEventListener("load", (event)=> {
     let main:project.Main = new project.Main();
