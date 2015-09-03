@@ -19,14 +19,9 @@ namespace project {
             this._canvas = <HTMLCanvasElement> document.getElementById("myCanvas")
             this._stage = new createjs.Stage(this._canvas);
 
-            // タッチ対応
-            if (createjs.Touch.isSupported()) {
-                createjs.Touch.enable(this._stage);
-            }
-
             // Tickerを作成
             createjs.Ticker.timingMode = createjs.Ticker.RAF;
-            createjs.Ticker.addEventListener("tick", (event) => this.tickeHandler(event));
+
             // メインのレイヤーを配置
             this._mainLayer = new MainLayer();
             this._stage.addChild(this._mainLayer);
@@ -36,8 +31,24 @@ namespace project {
         }
 
         /*
+         * 強制リサイズ処理
+         */
+        public forceResizeHandler():void {
+            this.resizeHandler();
+            if (this._stage)
+                this._stage.update();
+        }
+
+        /*
+         * アニメーションの開始
+         */
+        public start():void {
+            createjs.Ticker.addEventListener("tick", (event) => this.tickeHandler(event));
+        }
+
+        /*
          * Tick Handler
-         * */
+         */
         private tickeHandler(event):void {
             if (!event.paused) {
                 this._stage.update();

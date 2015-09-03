@@ -39,13 +39,8 @@ var project;
             // ステージを準備
             this._canvas = document.getElementById("myCanvas");
             this._stage = new createjs.Stage(this._canvas);
-            // タッチ対応
-            if (createjs.Touch.isSupported()) {
-                createjs.Touch.enable(this._stage);
-            }
             // Tickerを作成
             createjs.Ticker.timingMode = createjs.Ticker.RAF;
-            createjs.Ticker.addEventListener("tick", function (event) { return _this.tickeHandler(event); });
             // メインのレイヤーを配置
             this._mainLayer = new MainLayer();
             this._stage.addChild(this._mainLayer);
@@ -54,8 +49,23 @@ var project;
             window.addEventListener("resize", function () { return _this.resizeHandler(); });
         }
         /*
+         * 強制リサイズ処理
+         */
+        ParticleCreator.prototype.forceResizeHandler = function () {
+            this.resizeHandler();
+            if (this._stage)
+                this._stage.update();
+        };
+        /*
+         * アニメーションの開始
+         */
+        ParticleCreator.prototype.start = function () {
+            var _this = this;
+            createjs.Ticker.addEventListener("tick", function (event) { return _this.tickeHandler(event); });
+        };
+        /*
          * Tick Handler
-         * */
+         */
         ParticleCreator.prototype.tickeHandler = function (event) {
             if (!event.paused) {
                 this._stage.update();
@@ -500,6 +510,8 @@ var project;
 (function (project) {
     var Main = (function () {
         function Main() {
+            this._particleCreator = new project.ParticleCreator();
+            this._particleCreator.forceResizeHandler();
             createjs.Sound.alternateExtensions = ["mp3"]; // add other extensions to try loading if the src file extension is not supported
         }
         Main.prototype.init = function () {
@@ -527,8 +539,8 @@ var project;
             queue.loadManifest(soundManifest);
         };
         Main.prototype.loadComplete = function (event) {
-            var particleCreator = new project.ParticleCreator();
             createjs.Sound.play(project.Param.BGM_ID, { loop: -1, pan: 0.01 });
+            this._particleCreator.start();
         };
         return Main;
     })();

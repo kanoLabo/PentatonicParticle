@@ -12,8 +12,13 @@ declare var isAudioSprite:boolean;
 namespace project {
 
     export class Main {
+        private _particleCreator:ParticleCreator;
+
+
         constructor() {
-            createjs.Sound.alternateExtensions = ["mp3"];	// add other extensions to try loading if the src file extension is not supported
+            this._particleCreator = new project.ParticleCreator();
+            this._particleCreator.forceResizeHandler();
+            createjs.Sound.alternateExtensions = ["mp3"];   // add other extensions to try loading if the src file extension is not supported
         }
 
         public init():void {
@@ -46,8 +51,8 @@ namespace project {
         }
 
         private loadComplete(event):void {
-            let particleCreator:project.ParticleCreator = new project.ParticleCreator();
             createjs.Sound.play(Param.BGM_ID, {loop: -1, pan: 0.01});
+            this._particleCreator.start();
         }
     }
 }
