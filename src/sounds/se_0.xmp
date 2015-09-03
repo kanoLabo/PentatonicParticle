@@ -10,10 +10,10 @@
             xmlns:xmpDM="http://ns.adobe.com/xmp/1.0/DynamicMedia/">
          <xmp:CreatorTool>Adobe Audition CC 2015.0 (Macintosh)</xmp:CreatorTool>
          <xmp:CreateDate>2015-09-01T21:02:57+09:00</xmp:CreateDate>
-         <xmp:MetadataDate>2015-09-01T21:09:48+09:00</xmp:MetadataDate>
-         <xmp:ModifyDate>2015-09-01T21:09:48+09:00</xmp:ModifyDate>
-         <xmpMM:InstanceID>xmp.iid:36aa9eea-4388-4c05-be7a-2abfd374d987</xmpMM:InstanceID>
-         <xmpMM:DocumentID>xmp.did:36aa9eea-4388-4c05-be7a-2abfd374d987</xmpMM:DocumentID>
+         <xmp:MetadataDate>2015-09-03T23:17:32+09:00</xmp:MetadataDate>
+         <xmp:ModifyDate>2015-09-03T23:17:32+09:00</xmp:ModifyDate>
+         <xmpMM:InstanceID>xmp.iid:b54f3a56-6f11-483a-b16c-55f5e6416bf5</xmpMM:InstanceID>
+         <xmpMM:DocumentID>xmp.did:b54f3a56-6f11-483a-b16c-55f5e6416bf5</xmpMM:DocumentID>
          <xmpMM:OriginalDocumentID>xmp.did:37877f2a-7c9e-47a3-b163-974c760f56d4</xmpMM:OriginalDocumentID>
          <xmpMM:History>
             <rdf:Seq>
@@ -40,47 +40,33 @@
                </rdf:li>
                <rdf:li rdf:parseType="Resource">
                   <stEvt:action>saved</stEvt:action>
-                  <stEvt:instanceID>xmp.iid:cbb47ee2-ecbb-4dd8-92ba-9cd7b8251769</stEvt:instanceID>
-                  <stEvt:when>2015-09-01T21:03:20+09:00</stEvt:when>
+                  <stEvt:instanceID>xmp.iid:b6c3709c-5209-4984-92f1-ff20d83ae786</stEvt:instanceID>
+                  <stEvt:when>2015-09-03T23:17:24+09:00</stEvt:when>
                   <stEvt:softwareAgent>Adobe Audition CC 2015.0 (Macintosh)</stEvt:softwareAgent>
                   <stEvt:changed>/metadata</stEvt:changed>
                </rdf:li>
                <rdf:li rdf:parseType="Resource">
                   <stEvt:action>saved</stEvt:action>
-                  <stEvt:instanceID>xmp.iid:ed26e5ae-58af-46dd-8a94-8b964ee12dde</stEvt:instanceID>
-                  <stEvt:when>2015-09-01T21:09:48+09:00</stEvt:when>
+                  <stEvt:instanceID>xmp.iid:d8b5af90-401e-482d-8347-0145052eaa9b</stEvt:instanceID>
+                  <stEvt:when>2015-09-03T23:17:32+09:00</stEvt:when>
                   <stEvt:softwareAgent>Adobe Audition CC 2015.0 (Macintosh)</stEvt:softwareAgent>
                   <stEvt:changed>/metadata</stEvt:changed>
                </rdf:li>
                <rdf:li rdf:parseType="Resource">
-                  <stEvt:action>converted</stEvt:action>
-                  <stEvt:parameters>from audio/x-aiff to audio/ogg; codec="vorbis"</stEvt:parameters>
-               </rdf:li>
-               <rdf:li rdf:parseType="Resource">
                   <stEvt:action>saved</stEvt:action>
-                  <stEvt:instanceID>xmp.iid:fcfb4cad-e3ca-4e4d-a98c-12becf6a4857</stEvt:instanceID>
-                  <stEvt:when>2015-09-01T21:09:48+09:00</stEvt:when>
-                  <stEvt:softwareAgent>Adobe Audition CC 2015.0 (Macintosh)</stEvt:softwareAgent>
-               </rdf:li>
-               <rdf:li rdf:parseType="Resource">
-                  <stEvt:action>converted</stEvt:action>
-                  <stEvt:parameters>from audio/x-aiff to audio/ogg; codec="vorbis"</stEvt:parameters>
-               </rdf:li>
-               <rdf:li rdf:parseType="Resource">
-                  <stEvt:action>saved</stEvt:action>
-                  <stEvt:instanceID>xmp.iid:36aa9eea-4388-4c05-be7a-2abfd374d987</stEvt:instanceID>
-                  <stEvt:when>2015-09-01T21:09:48+09:00</stEvt:when>
+                  <stEvt:instanceID>xmp.iid:b54f3a56-6f11-483a-b16c-55f5e6416bf5</stEvt:instanceID>
+                  <stEvt:when>2015-09-03T23:17:32+09:00</stEvt:when>
                   <stEvt:softwareAgent>Adobe Audition CC 2015.0 (Macintosh)</stEvt:softwareAgent>
                   <stEvt:changed>/</stEvt:changed>
                </rdf:li>
             </rdf:Seq>
          </xmpMM:History>
          <xmpMM:DerivedFrom rdf:parseType="Resource">
-            <stRef:instanceID>xmp.iid:fcfb4cad-e3ca-4e4d-a98c-12becf6a4857</stRef:instanceID>
-            <stRef:documentID>xmp.did:fcfb4cad-e3ca-4e4d-a98c-12becf6a4857</stRef:documentID>
+            <stRef:instanceID>xmp.iid:d8b5af90-401e-482d-8347-0145052eaa9b</stRef:instanceID>
+            <stRef:documentID>xmp.did:e5607801-8db1-417d-b301-6954ade1227d</stRef:documentID>
             <stRef:originalDocumentID>xmp.did:37877f2a-7c9e-47a3-b163-974c760f56d4</stRef:originalDocumentID>
          </xmpMM:DerivedFrom>
-         <dc:format>audio/ogg; codec="vorbis"</dc:format>
+         <dc:format>audio/x-aiff</dc:format>
          <xmpDM:Tracks>
             <rdf:Bag>
                <rdf:li rdf:parseType="Resource">
@@ -96,11 +82,11 @@
                               <rdf:Seq>
                                  <rdf:li rdf:parseType="Resource">
                                     <xmpDM:key>marker_guid</xmpDM:key>
-                                    <xmpDM:value>xmp:id:1acd7d75-b842-424a-b852-e454139dd3b0</xmpDM:value>
+                                    <xmpDM:value>xmp:id:dfec3a01-2eb3-4019-b2f1-cf84dfb7c753</xmpDM:value>
                                  </rdf:li>
                               </rdf:Seq>
                            </xmpDM:cuePointParams>
-                           <xmpDM:guid>xmp:id:1acd7d75-b842-424a-b852-e454139dd3b0</xmpDM:guid>
+                           <xmpDM:guid>xmp:id:dfec3a01-2eb3-4019-b2f1-cf84dfb7c753</xmpDM:guid>
                         </rdf:li>
                      </rdf:Seq>
                   </xmpDM:markers>
