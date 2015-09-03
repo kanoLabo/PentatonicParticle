@@ -75,7 +75,6 @@ namespace project {
             this.addChild(this._bg);
 
             this._lineDrawer = new LineDrawer();
-            //this._lines.compositeOperation = "lighter";
             this.addChild(this._lineDrawer);
 
             this._particleEmitter = new ParticleEmitter();  // パーティクル発生装置のインスタンスを作成
@@ -155,6 +154,7 @@ namespace project {
 
         public constructor() {
             super();
+            this.compositeOperation = "lighter";
             this._linePoint = [];
         }
 
