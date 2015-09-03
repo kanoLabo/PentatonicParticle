@@ -68,6 +68,9 @@ var project;
             this._bg = new createjs.Shape();
             this.drawBG(800, 600);
             this.addChild(this._bg);
+            this._lineDrawer = new LineDrawer();
+            //this._lines.compositeOperation = "lighter";
+            this.addChild(this._lineDrawer);
             this._particleEmitter = new ParticleEmitter(); // パーティクル発生装置のインスタンスを作成
             this.addChild(this._particleEmitter);
             this.addEventListener("tick", function (event) { return _this.tickHandler(event); });
@@ -115,13 +118,61 @@ var project;
                     var soundID = "se_" + Math.floor(Math.random() * project.Param.SE_NUM);
                     createjs.Sound.play(soundID, { pan: 0.01 });
                 }
+                this._lineDrawer.addLinePoint(this._particleEmitter.emitX, this._particleEmitter.emitY);
             }
+            else {
+                this._lineDrawer.shiftLinePoint();
+            }
+            this._lineDrawer.update(this._particleEmitter.particleColor);
         };
         return MainLayer;
     })(createjs.Container);
     /*
+     * 軌跡を描く
+     */
+    var LineDrawer = (function (_super) {
+        __extends(LineDrawer, _super);
+        function LineDrawer() {
+            _super.call(this);
+            this._linePoint = [];
+        }
+        LineDrawer.prototype.addLinePoint = function (emitX, emitY) {
+            var linePoint = new LinePointData(emitX, emitY);
+            this._linePoint.push(linePoint);
+        };
+        LineDrawer.prototype.shiftLinePoint = function () {
+            this._linePoint.shift();
+        };
+        LineDrawer.prototype.update = function (particleColor) {
+            // Emitterの状態に応じて線を描く
+            this.graphics.clear();
+            var max = this._linePoint.length - 1;
+            for (var i = 0; i < max; i++) {
+                var p1 = this._linePoint[i];
+                var p2 = this._linePoint[i + 1];
+                // Emitterの状態に応じて線を描く
+                this.graphics
+                    .setStrokeStyle(10, "round") // 線の太さ
+                    .beginStroke(particleColor)
+                    .moveTo(p1.x, p1.y)
+                    .lineTo(p2.x, p2.y);
+            }
+            if (max > 18) {
+                this._linePoint.shift();
+            }
+        };
+        return LineDrawer;
+    })(createjs.Shape);
+    var LinePointData = (function () {
+        function LinePointData(emitX, emitY) {
+            this.x = emitX;
+            this.y = emitY;
+        }
+        return LinePointData;
+    })();
+    /*
      * パーティクル発生装置
-     * */
+     */
     var ParticleEmitter = (function (_super) {
         __extends(ParticleEmitter, _super);
         function ParticleEmitter() {
@@ -130,24 +181,24 @@ var project;
             this._animationParticles = [];
             // パーティクルのオブジェクトプール。アニメーションがされていないパーティクルがここに待機している。
             this._particlePool = [];
-            this._emitX = 0;
-            this._emitY = 0;
-            this._vx = 0;
-            this._vy = 0;
+            this.emitX = 0;
+            this.emitY = 0;
+            this.vx = 0;
+            this.vy = 0;
         }
         /*
          * MainLayerのtickイベント毎に実行される処理
          * */
         ParticleEmitter.prototype.update = function (goalX, goalY) {
             // 発生装置はgoalに徐々に近づいていく。
-            var dx = goalX - this._emitX;
-            var dy = goalY - this._emitY;
+            var dx = goalX - this.emitX;
+            var dy = goalY - this.emitY;
             var d = Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2)); // 斜め方向の移動距離
             var rad = Math.atan2(dy, dx); // 移動角度
-            this._vx = Math.cos(rad) * d * 0.1; // 速度の更新
-            this._vy = Math.sin(rad) * d * 0.1; // 速度の更新
-            this._emitX += this._vx;
-            this._emitY += this._vy;
+            this.vx = Math.cos(rad) * d * 0.1; // 速度の更新
+            this.vy = Math.sin(rad) * d * 0.1; // 速度の更新
+            this.emitX += this.vx;
+            this.emitY += this.vy;
             // アニメーション中のパーティクルの状態を更新
             this.updateParticles();
         };
@@ -155,13 +206,18 @@ var project;
          *　パーティクルを発生させる
          * */
         ParticleEmitter.prototype.emitParticle = function () {
+            this.updateParticleColor();
             for (var i = 0; i < 2; i++) {
                 var particle = this.getParticle();
-                particle.init(this._emitX, this._emitY, this._vx, this._vy);
+                particle.init(this.emitX, this.emitY, this.vx, this.vy, this.particleColor);
                 this.addChild(particle);
                 // アニメーション中のパーティクルとして設定
                 this._animationParticles.push(particle);
             }
+        };
+        ParticleEmitter.prototype.updateParticleColor = function () {
+            var colorHSL = createjs.Graphics.getHSL(new Date().getTime() / 20 + Math.random() * 60, 90 + Math.random() * 10, 50 + Math.random() * 10);
+            this.particleColor = colorHSL;
         };
         /*
          *　パーティクルのアニメーション
@@ -260,7 +316,7 @@ var project;
          * パーティクルの初期化
          * @param parentVX, parentVY :親コンテナの速度。パーティクルの速度に影響を与える。
          * */
-        Particle.prototype.init = function (emitX, emitY, parentVX, parentVY) {
+        Particle.prototype.init = function (emitX, emitY, parentVX, parentVY, particleColor) {
             this.x = emitX;
             this.y = emitY;
             this._life = 70 + Math.random() * 20;
@@ -270,8 +326,7 @@ var project;
             this.isDead = false;
             this.alpha = 1;
             this.rotation = 50 * Math.PI * (Math.random() - 0.5);
-            var colorHSL = createjs.Graphics.getHSL(new Date().getTime() / 20 + Math.random() * 60, 90 + Math.random() * 10, 50 + Math.random() * 10);
-            this.color = colorHSL;
+            this.color = particleColor;
         };
         /*
          * パーティクルの時間経過処理。
