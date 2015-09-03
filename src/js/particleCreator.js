@@ -12,7 +12,7 @@ var project;
 (function (project) {
     /*
      * パーティクルモーションのクラス
-       */
+     */
     var ParticleCreator = (function () {
         function ParticleCreator() {
             var _this = this;
@@ -35,7 +35,7 @@ var project;
         }
         /*
          * Tick Handler
-           */
+         * */
         ParticleCreator.prototype.tickeHandler = function (event) {
             if (!event.paused) {
                 this._stage.update();
@@ -43,7 +43,7 @@ var project;
         };
         /*
          * リサイズのイベント処理
-           */
+         * */
         ParticleCreator.prototype.resizeHandler = function () {
             var windowWidth = window.innerWidth;
             var windowHeight = window.innerHeight;
@@ -58,7 +58,7 @@ var project;
     project.ParticleCreator = ParticleCreator;
     /*
      * メインのレイヤー
-       */
+     * */
     var MainLayer = (function (_super) {
         __extends(MainLayer, _super);
         function MainLayer() {
@@ -82,7 +82,7 @@ var project;
         };
         /*
          * 指定の大きさの背景を描画
-           */
+         * */
         MainLayer.prototype.drawBG = function (bgWidth, bgHeight) {
             this._bg.graphics.clear();
             this._bg.graphics.beginLinearGradientFill(["#011c31", "#001121"], [0, 1], 0, 0, 0, bgHeight)
@@ -91,19 +91,19 @@ var project;
         };
         /*
          * マウスを押した時の処理
-           */
+         * */
         MainLayer.prototype.mouseDownHandler = function (event) {
             this._isMouseDown = true;
         };
         /*
          * マウスを離した時の処理
-           */
+         * */
         MainLayer.prototype.mouseUpHandler = function (event) {
             this._isMouseDown = false;
         };
         /*
          * Tickイベントで実行される処理
-           */
+         * */
         MainLayer.prototype.tickHandler = function (event) {
             // マウスの座標
             var mouseX = this.getStage().mouseX;
@@ -188,7 +188,7 @@ var project;
         }
         /*
          * MainLayerのtickイベント毎に実行される処理
-           */
+         * */
         ParticleEmitter.prototype.update = function (goalX, goalY) {
             // 発生装置はgoalに徐々に近づいていく。
             var dx = goalX - this.emitX;
@@ -204,7 +204,7 @@ var project;
         };
         /*
          *　パーティクルを発生させる
-           */
+         * */
         ParticleEmitter.prototype.emitParticle = function () {
             this.updateParticleColor();
             for (var i = 0; i < 2; i++) {
@@ -221,7 +221,7 @@ var project;
         };
         /*
          *　パーティクルのアニメーション
-           */
+         * */
         ParticleEmitter.prototype.updateParticles = function () {
             var windowWidth = window.innerWidth;
             var windowHeight = window.innerHeight;
@@ -255,7 +255,7 @@ var project;
         /*
          * オブジェクトプールからパーティクルを取得。
          * プールにパーティクルが無ければ新規作成
-           */
+         * */
         ParticleEmitter.prototype.getParticle = function () {
             if (this._particlePool.length > 0) {
                 return this._particlePool.shift();
@@ -266,7 +266,7 @@ var project;
         };
         /*
          * パーティクルを取り除く。
-           */
+         * */
         ParticleEmitter.prototype.removeParticle = function (particle, animationIndex) {
             // Containerからパーティクルをremove
             this.removeChild(particle);
@@ -281,7 +281,7 @@ var project;
     })(createjs.Container);
     /*
      * パーティクルのクラス
-       */
+     * */
     var Particle = (function (_super) {
         __extends(Particle, _super);
         function Particle() {
@@ -315,7 +315,7 @@ var project;
         /*
          * パーティクルの初期化
          * @param parentVX, parentVY :親コンテナの速度。パーティクルの速度に影響を与える。
-           */
+         * */
         Particle.prototype.init = function (emitX, emitY, parentVX, parentVY, particleColor) {
             this.x = emitX;
             this.y = emitY;
@@ -333,7 +333,7 @@ var project;
          * _countがパーティクルの年齢。
          * _lifeを超えたら死亡する。
          *
-           */
+         * */
         Particle.prototype.update = function () {
             this._count++;
             if (this._count <= this._life) {

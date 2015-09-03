@@ -2,11 +2,9 @@
 namespace project {
 
     /*
-    * AudioSprite用のSoundManifestをつくるためのタスク
-    */
-    export class CreateAudioSpriteManifestTask
-    {
-
+     * AudioSprite用のSoundManifestをつくるためのタスク
+     */
+    export class CreateAudioSpriteManifestTask {
         private AUDIO_FILE:string = "150901.ogg";
 
         public getSoundManifest():Object[] {

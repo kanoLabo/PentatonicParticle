@@ -15,6 +15,5 @@ namespace project {
 
         /* BGのID */
         static BGM_ID:string = "bgm";
-
     }
 }

@@ -2,10 +2,9 @@
 
 namespace project {
     /*
-    * 各オーディオファイル用のSoundManifestをつくるためのタスク
-    */
-    export class CreateSoundManifestTask
-    {
+     * 各オーディオファイル用のSoundManifestをつくるためのタスク
+     */
+    export class CreateSoundManifestTask {
         public getSoundManifest():Object[] {
             let soundManifest:Object[] = this.createSoundManifest();
             return soundManifest;

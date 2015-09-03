@@ -7,7 +7,7 @@
 namespace project {
     /*
      * パーティクルモーションのクラス
-     * */
+     */
     export class ParticleCreator {
         private _stage:createjs.Stage;  // ステージ
         private _canvas:HTMLCanvasElement;  // ステージ
@@ -48,8 +48,8 @@ namespace project {
          * リサイズのイベント処理
          * */
         private resizeHandler():void {
-            var windowWidth:number = window.innerWidth;
-            var windowHeight:number = window.innerHeight;
+            let windowWidth:number = window.innerWidth;
+            let windowHeight:number = window.innerHeight;
             // ステージのサイズをwindowのサイズに変更
             this._canvas.width = windowWidth;
             this._canvas.height = windowHeight;
@@ -120,8 +120,8 @@ namespace project {
         private tickHandler(event):void {
 
             // マウスの座標
-            var mouseX:number = this.getStage().mouseX;
-            var mouseY:number = this.getStage().mouseY;
+            let mouseX:number = this.getStage().mouseX;
+            let mouseY:number = this.getStage().mouseY;
             // パーティクル発生装置の座標を更新
             this._particleEmitter.update(mouseX, mouseY);
 
@@ -131,7 +131,7 @@ namespace project {
 
                 // 5フレームに1回処理
                 if (this._cntTick++ % 7 == 0) {
-                    var soundID:string = "se_" + Math.floor(Math.random() * Param.SE_NUM);
+                    let soundID:string = "se_" + Math.floor(Math.random() * Param.SE_NUM);
                     createjs.Sound.play(soundID, {pan: 0.01});
                 }
                 this._lineDrawer.addLinePoint(
@@ -139,8 +139,7 @@ namespace project {
                     this._particleEmitter.emitY
                 );
             }
-            else
-            {
+            else {
                 this._lineDrawer.shiftLinePoint();
             }
 
@@ -153,33 +152,31 @@ namespace project {
      */
     class LineDrawer extends createjs.Shape {
         private _linePoint:LinePointData[];
+
         public constructor() {
             super();
             this._linePoint = [];
         }
 
-        public addLinePoint(emitX:number, emitY:number):void
-        {
-            var linePoint:LinePointData = new LinePointData(emitX, emitY);
+        public addLinePoint(emitX:number, emitY:number):void {
+            let linePoint:LinePointData = new LinePointData(emitX, emitY);
             this._linePoint.push(linePoint);
 
         }
-        public shiftLinePoint():void
-        {
+
+        public shiftLinePoint():void {
             this._linePoint.shift();
 
         }
 
-        public update(particleColor:string):void
-        {
+        public update(particleColor:string):void {
             // Emitterの状態に応じて線を描く
             this.graphics.clear();
-            var max = this._linePoint.length - 1;
+            let max = this._linePoint.length - 1;
 
-            for (var i = 0; i < max; i++)
-            {
-                var p1 = this._linePoint[i];
-                var p2 = this._linePoint[i + 1];
+            for (let i = 0; i < max; i++) {
+                let p1 = this._linePoint[i];
+                let p2 = this._linePoint[i + 1];
                 // Emitterの状態に応じて線を描く
                 this.graphics
                     .setStrokeStyle(10, "round") // 線の太さ
@@ -188,7 +185,7 @@ namespace project {
                     .lineTo(p2.x, p2.y);
             }
 
-            if(max > 18){
+            if (max > 18) {
                 this._linePoint.shift();
             }
         }
@@ -199,8 +196,7 @@ namespace project {
         public x:number;
         public y:number;
 
-        public constructor(emitX:number, emitY:number)
-        {
+        public constructor(emitX:number, emitY:number) {
             this.x = emitX;
             this.y = emitY;
         }
@@ -238,10 +234,10 @@ namespace project {
          * */
         public update(goalX:number, goalY:number) {
             // 発生装置はgoalに徐々に近づいていく。
-            var dx:number = goalX - this.emitX;
-            var dy:number = goalY - this.emitY;
-            var d:number = Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));  // 斜め方向の移動距離
-            var rad:number = Math.atan2(dy, dx);    // 移動角度
+            let dx:number = goalX - this.emitX;
+            let dy:number = goalY - this.emitY;
+            let d:number = Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));  // 斜め方向の移動距離
+            let rad:number = Math.atan2(dy, dx);    // 移動角度
             this.vx = Math.cos(rad) * d * 0.1; // 速度の更新
             this.vy = Math.sin(rad) * d * 0.1; // 速度の更新
             this.emitX += this.vx;
@@ -257,9 +253,8 @@ namespace project {
 
             this.updateParticleColor();
 
-            for(var i:number = 0; i < 2; i++)
-            {
-                var particle:Particle = this.getParticle();
+            for (let i:number = 0; i < 2; i++) {
+                let particle:Particle = this.getParticle();
                 particle.init(this.emitX, this.emitY, this.vx, this.vy, this.particleColor);
                 this.addChild(particle);
                 // アニメーション中のパーティクルとして設定
@@ -268,9 +263,8 @@ namespace project {
         }
 
 
-        private updateParticleColor():void
-        {
-            var colorHSL:string = createjs.Graphics.getHSL(
+        private updateParticleColor():void {
+            let colorHSL:string = createjs.Graphics.getHSL(
                 new Date().getTime() / 20 + Math.random() * 60,
                 90 + Math.random() * 10,
                 50 + Math.random() * 10
@@ -285,8 +279,8 @@ namespace project {
             let windowWidth:number = window.innerWidth;
             let windowHeight:number = window.innerHeight;
 
-            for (var i:number = 0; i < this._animationParticles.length; i++) {
-                var particle:Particle = this._animationParticles[i];
+            for (let i:number = 0; i < this._animationParticles.length; i++) {
+                let particle:Particle = this._animationParticles[i];
                 if (!particle.isDead) {
                     if (particle.y >= windowHeight) {
                         particle.vy *= -0.9;
@@ -374,12 +368,12 @@ namespace project {
 
         private getIconStr(isStar:boolean):string {
             // アイコンの Unicode を指定
-            var iconUnicode = !isStar ? "f001" : "f005";
+            let iconUnicode = !isStar ? "f001" : "f005";
 
             // Unicode から文字コードに変換
-            var iconInt = parseInt(iconUnicode, 16);
+            let iconInt = parseInt(iconUnicode, 16);
             // 文字コードから文字列に変換する
-            var iconStr = String.fromCharCode(iconInt);
+            let iconStr = String.fromCharCode(iconInt);
             // CreateJS のテキストを作成
             return iconStr;
 

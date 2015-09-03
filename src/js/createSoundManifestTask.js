@@ -2,8 +2,8 @@
 var project;
 (function (project) {
     /*
-    * 各オーディオファイル用のSoundManifestをつくるためのタスク
-    */
+     * 各オーディオファイル用のSoundManifestをつくるためのタスク
+     */
     var CreateSoundManifestTask = (function () {
         function CreateSoundManifestTask() {
         }

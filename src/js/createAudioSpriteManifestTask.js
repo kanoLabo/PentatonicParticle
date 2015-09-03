@@ -2,8 +2,8 @@
 var project;
 (function (project) {
     /*
-    * AudioSprite用のSoundManifestをつくるためのタスク
-    */
+     * AudioSprite用のSoundManifestをつくるためのタスク
+     */
     var CreateAudioSpriteManifestTask = (function () {
         function CreateAudioSpriteManifestTask() {
             this.AUDIO_FILE = "150901.ogg";

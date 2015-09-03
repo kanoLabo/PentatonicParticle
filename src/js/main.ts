@@ -17,7 +17,7 @@ namespace project {
         }
 
         public init():void {
-            var createSoundManifestTask:project.CreateAudioSpriteManifestTask = new project.CreateAudioSpriteManifestTask();
+            let createSoundManifestTask:project.CreateAudioSpriteManifestTask = new project.CreateAudioSpriteManifestTask();
             let soundManifest:Object[] = createSoundManifestTask.getSoundManifest();
             this.startPreload(soundManifest);
         }
@@ -34,15 +34,15 @@ namespace project {
         }
 
         private loadComplete(event):void {
-            var particleCreator:project.ParticleCreator = new project.ParticleCreator();
-            createjs.Sound.play(Param.BGM_ID, {loop:-1, pan:0.01});
+            let particleCreator:project.ParticleCreator = new project.ParticleCreator();
+            createjs.Sound.play(Param.BGM_ID, {loop: -1, pan: 0.01});
         }
     }
 }
 
 
 window.addEventListener("load", (event)=> {
-    var main:project.Main = new project.Main();
+    let main:project.Main = new project.Main();
     main.init();
 
 });
