@@ -392,7 +392,7 @@ var project;
      */
     var CreateAudioSpriteManifestTask = (function () {
         function CreateAudioSpriteManifestTask() {
-            this.AUDIO_FILE = "150901.ogg";
+            this.AUDIO_FILE = "150903.ogg";
         }
         CreateAudioSpriteManifestTask.prototype.getSoundManifest = function () {
             var soundManifest = this.createSoundManifest();
@@ -474,6 +474,44 @@ var project;
     })();
     project.CreateSoundManifestTask = CreateSoundManifestTask;
 })(project || (project = {}));
+/// <reference path="../typings/preloadjs/preloadjs.d.ts" />
+/// <reference path="../typings/tweenjs/tweenjs.d.ts" />
+/// <reference path="../typings/easeljs/easeljs.d.ts" />
+/// <reference path="../typings/soundjs/soundjs.d.ts" />
+/// <reference path="main.ts" />
+var project;
+(function (project) {
+    var ProgressLoadingBarTask = (function () {
+        function ProgressLoadingBarTask(main) {
+            this._main = main;
+            this._progressBarLayer = document.getElementById("progressBarLayer");
+            this._progressBar = document.getElementById("progressBar");
+        }
+        ProgressLoadingBarTask.prototype.update = function (progress) {
+            var percent = progress * 100;
+            this._progressBar.style.width = percent + "%";
+        };
+        ProgressLoadingBarTask.prototype.completeHandler = function () {
+            var _this = this;
+            setTimeout(function () {
+                _this._progressBar.style.opacity = "0";
+                _this._progressBarLayer.className = "on";
+                _this._progressBarLayer.addEventListener("click", function () { return _this.playButtonTapHandler(); });
+            }, 100);
+        };
+        ProgressLoadingBarTask.prototype.playButtonTapHandler = function () {
+            var _this = this;
+            createjs.Sound.play(project.Param.BGM_ID, { loop: -1, pan: 0.01 });
+            this._progressBarLayer.className = "";
+            setTimeout(function () {
+                document.body.removeChild(_this._progressBarLayer);
+            }, 100);
+            this._main.start();
+        };
+        return ProgressLoadingBarTask;
+    })();
+    project.ProgressLoadingBarTask = ProgressLoadingBarTask;
+})(project || (project = {}));
 var project;
 (function (project) {
     /** デバッグモードかどうか。本番公開時にはfalseにする */
@@ -504,6 +542,7 @@ var project;
 /// <reference path="particleCreator.ts" />
 /// <reference path="createAudioSpriteManifestTask.ts" />
 /// <reference path="createSoundManifestTask.ts" />
+/// <reference path="progressLoadingBarTask.ts" />
 /// <reference path="trace.ts" />
 createjs.Sound.initializeDefaultPlugins();
 var project;
@@ -512,7 +551,8 @@ var project;
         function Main() {
             this._particleCreator = new project.ParticleCreator();
             this._particleCreator.forceResizeHandler();
-            createjs.Sound.alternateExtensions = ["mp3"]; // add other extensions to try loading if the src file extension is not supported
+            this._loadingBarTask = new project.ProgressLoadingBarTask(this);
+            createjs.Sound.alternateExtensions = ["mp3"];
         }
         Main.prototype.init = function () {
             var soundManifest;
@@ -534,12 +574,18 @@ var project;
             var _this = this;
             var queue = new createjs.LoadQueue();
             queue.installPlugin(createjs.Sound);
+            queue.addEventListener("progress", function (event) { return _this.progressHandler(event); });
             queue.addEventListener("complete", function (event) { return _this.loadComplete(event); });
             queue.setMaxConnections(1);
             queue.loadManifest(soundManifest);
         };
+        Main.prototype.progressHandler = function (event) {
+            this._loadingBarTask.update(event.progress);
+        };
         Main.prototype.loadComplete = function (event) {
-            createjs.Sound.play(project.Param.BGM_ID, { loop: -1, pan: 0.01 });
+            this._loadingBarTask.completeHandler();
+        };
+        Main.prototype.start = function () {
             this._particleCreator.start();
         };
         return Main;

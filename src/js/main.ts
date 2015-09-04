@@ -5,6 +5,7 @@
 /// <reference path="particleCreator.ts" />
 /// <reference path="createAudioSpriteManifestTask.ts" />
 /// <reference path="createSoundManifestTask.ts" />
+/// <reference path="progressLoadingBarTask.ts" />
 /// <reference path="trace.ts" />
 
 createjs.Sound.initializeDefaultPlugins();
@@ -13,29 +14,29 @@ namespace project {
 
     export class Main {
         private _particleCreator:ParticleCreator;
-
+        private _loadingBarTask:ProgressLoadingBarTask;
 
         constructor() {
-            this._particleCreator = new project.ParticleCreator();
+            this._particleCreator = new ParticleCreator();
             this._particleCreator.forceResizeHandler();
-            createjs.Sound.alternateExtensions = ["mp3"];   // add other extensions to try loading if the src file extension is not supported
+
+            this._loadingBarTask = new ProgressLoadingBarTask(this);
+
+            createjs.Sound.alternateExtensions = ["mp3"];
         }
 
         public init():void {
             let soundManifest:Object[];
 
-            if (isAudioSprite)
-            {
+            if (isAudioSprite) {
                 let createSoundManifestTask:project.CreateAudioSpriteManifestTask = new project.CreateAudioSpriteManifestTask();
                 soundManifest = createSoundManifestTask.getSoundManifest();
             }
-            else
-            {
+            else {
                 let createSoundManifestTask:project.CreateSoundManifestTask = new project.CreateSoundManifestTask();
                 soundManifest = createSoundManifestTask.getSoundManifest();
             }
             trace("isAudioSprite", isAudioSprite, "Plugin is", createjs.Sound.activePlugin.toString());
-
             this.startPreload(soundManifest);
         }
 
@@ -45,13 +46,22 @@ namespace project {
         private startPreload(soundManifest:Object[]):void {
             let queue:createjs.LoadQueue = new createjs.LoadQueue();
             queue.installPlugin(createjs.Sound);
-            queue.addEventListener("complete", (event) => this.loadComplete(event));
+            queue.addEventListener("progress", (event) => this.progressHandler(<createjs.Event> event))
+            queue.addEventListener("complete", (event) => this.loadComplete(<createjs.Event> event));
             queue.setMaxConnections(1);
             queue.loadManifest(soundManifest);
         }
 
-        private loadComplete(event):void {
-            createjs.Sound.play(Param.BGM_ID, {loop: -1, pan: 0.01});
+        private progressHandler(event:createjs.Event):void {
+            this._loadingBarTask.update(event.progress);
+        }
+
+        private loadComplete(event:createjs.Event):void {
+            this._loadingBarTask.completeHandler();
+        }
+
+        public start():void
+        {
             this._particleCreator.start();
         }
     }

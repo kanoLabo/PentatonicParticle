@@ -5,7 +5,7 @@ namespace project {
      * AudioSprite用のSoundManifestをつくるためのタスク
      */
     export class CreateAudioSpriteManifestTask {
-        private AUDIO_FILE:string = "150901.ogg";
+        private AUDIO_FILE:string = "150903.ogg";
 
         public getSoundManifest():Object[] {
             let soundManifest:Object[] = this.createSoundManifest();
