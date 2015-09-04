@@ -81,14 +81,18 @@ namespace project {
         private _particleEmitter:ParticleEmitter;   // パーティクル発生装置のインスタンス
         private _bg:createjs.Shape; // 背景
         private _lineDrawer:LineDrawer; // 背景
-        private _cntTick:number = 0;
+        private _tickCount:number = 0;
+        private _particleTick:number = 0;
+        private emitFrequency:number = 1;
 
         public constructor() {
             super();
+            if (Param.lowPerformance)
+                this.emitFrequency = 5;
+
             this._bg = new createjs.Shape();
             this.drawBG(800, 600);
             this.addChild(this._bg);
-
             this._lineDrawer = new LineDrawer();
             this.addChild(this._lineDrawer);
 
@@ -133,6 +137,8 @@ namespace project {
          * */
         private tickHandler(event):void {
 
+
+
             // マウスの座標
             let mouseX:number = this.getStage().mouseX;
             let mouseY:number = this.getStage().mouseY;
@@ -140,9 +146,15 @@ namespace project {
             this._particleEmitter.update(mouseX, mouseY);
 
             if (this._isMouseDown) {
-                // マウスを押している場合にパーティクル発生命令
-                this._particleEmitter.emitParticle();
+                this._tickCount++;
+                if (this._tickCount % this.emitFrequency == 0)
+                {
+                    // マウスを押している場合にパーティクル発生命令
+                    this._particleEmitter.emitParticle();
+                }
+
                 this.playSE();
+
 
                 this._lineDrawer.addLinePoint(
                     this._particleEmitter.emitX,
@@ -153,6 +165,7 @@ namespace project {
                 this._lineDrawer.shiftLinePoint();
             }
 
+            this._tickCount++;
             this._lineDrawer.update(this._particleEmitter.particleColor);
         }
 
@@ -162,7 +175,7 @@ namespace project {
         private playSE():void
         {
             // 7フレームに1回処理
-            if (this._cntTick++ % 7 == 0) {
+            if (this._particleTick++ % 7 == 0) {
                 let soundID:string = "se_" + Math.floor(Math.random() * Param.SE_NUM);
                 createjs.Sound.play(soundID, {pan: 0.01});
             }
@@ -238,6 +251,8 @@ namespace project {
 
         public particleColor:string;
 
+
+
         // アニメーション中のパーティクルを格納する配列
         private _animationParticles:Particle[] = [];
         // パーティクルのオブジェクトプール。アニメーションがされていないパーティクルがここに待機している。
@@ -275,14 +290,11 @@ namespace project {
         public emitParticle():void {
 
             this.updateParticleColor();
-
-            for (let i:number = 0; i < 2; i++) {
-                let particle:Particle = this.getParticle();
-                particle.init(this.emitX, this.emitY, this.vx, this.vy, this.particleColor);
-                this.addChild(particle);
-                // アニメーション中のパーティクルとして設定
-                this._animationParticles.push(particle);
-            }
+            let particle:Particle = this.getParticle();
+            particle.init(this.emitX, this.emitY, this.vx, this.vy, this.particleColor);
+            this.addChild(particle);
+            // アニメーション中のパーティクルとして設定
+            this._animationParticles.push(particle);
         }
 
 
@@ -370,7 +382,6 @@ namespace project {
 
         public constructor() {
             super("", "12px FontAwesome");
-            super("", 12 + Math.floor(50 * Math.random()) + "px FontAwesome");
             this._isStar = Math.random() > 0.8;
             let iconStr:string = this.getIconStr(this._isStar);
             this.text = iconStr;
@@ -384,9 +395,9 @@ namespace project {
 
         private getIconSize(isStar:boolean):number {
             if (!isStar)
-                return 12 + Math.floor(50 * Math.random())
+                return 16 + Math.floor(60 * Math.random())
             else
-                return 8 + Math.floor(14 * Math.random())
+                return 15 + Math.floor(50 * Math.random())
         }
 
         private getIconStr(isStar:boolean):string {
@@ -434,11 +445,8 @@ namespace project {
                 this.y += this.vy;
 
                 // 死にそうになったら点滅を開始
-                if (this._count >= this._life / 2) {
-                    // this.alpha = 0.6 + Math.random() * 0.4;
+                if (this._count >= this._life / 2)
                     this.alpha = (1 - this._count / this._life);
-                }
-
             }
             else {
                 // 寿命が来たらフラグを立てる

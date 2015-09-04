@@ -22,5 +22,13 @@ namespace project {
         /* Androidかどうか */
         static isAndroid:boolean = false;
 
+        /* HTMLAudioかどうか */
+        static isHTMLAudio:boolean = false;
+
+        /* ローパフォーマンスモードかどうか */
+        static lowPerformance:boolean = false;
+
+        /* ローパフォーマンスモードかどうか */
+
     }
 }

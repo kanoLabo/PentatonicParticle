@@ -18,6 +18,10 @@ var project;
         Param.isIOS = false;
         /* Androidかどうか */
         Param.isAndroid = false;
+        /* HTMLAudioかどうか */
+        Param.isHTMLAudio = false;
+        /* ローパフォーマンスモードかどうか */
+        Param.lowPerformance = false;
         return Param;
     })();
     project.Param = Param;
@@ -101,7 +105,11 @@ var project;
         function MainLayer() {
             var _this = this;
             _super.call(this);
-            this._cntTick = 0;
+            this._tickCount = 0;
+            this._particleTick = 0;
+            this.emitFrequency = 1;
+            if (project.Param.lowPerformance)
+                this.emitFrequency = 5;
             this._bg = new createjs.Shape();
             this.drawBG(800, 600);
             this.addChild(this._bg);
@@ -147,14 +155,18 @@ var project;
             // パーティクル発生装置の座標を更新
             this._particleEmitter.update(mouseX, mouseY);
             if (this._isMouseDown) {
-                // マウスを押している場合にパーティクル発生命令
-                this._particleEmitter.emitParticle();
+                this._tickCount++;
+                if (this._tickCount % this.emitFrequency == 0) {
+                    // マウスを押している場合にパーティクル発生命令
+                    this._particleEmitter.emitParticle();
+                }
                 this.playSE();
                 this._lineDrawer.addLinePoint(this._particleEmitter.emitX, this._particleEmitter.emitY);
             }
             else {
                 this._lineDrawer.shiftLinePoint();
             }
+            this._tickCount++;
             this._lineDrawer.update(this._particleEmitter.particleColor);
         };
         /*
@@ -162,7 +174,7 @@ var project;
          */
         MainLayer.prototype.playSE = function () {
             // 7フレームに1回処理
-            if (this._cntTick++ % 7 == 0) {
+            if (this._particleTick++ % 7 == 0) {
                 var soundID = "se_" + Math.floor(Math.random() * project.Param.SE_NUM);
                 createjs.Sound.play(soundID, { pan: 0.01 });
             }
@@ -250,13 +262,11 @@ var project;
          * */
         ParticleEmitter.prototype.emitParticle = function () {
             this.updateParticleColor();
-            for (var i = 0; i < 2; i++) {
-                var particle = this.getParticle();
-                particle.init(this.emitX, this.emitY, this.vx, this.vy, this.particleColor);
-                this.addChild(particle);
-                // アニメーション中のパーティクルとして設定
-                this._animationParticles.push(particle);
-            }
+            var particle = this.getParticle();
+            particle.init(this.emitX, this.emitY, this.vx, this.vy, this.particleColor);
+            this.addChild(particle);
+            // アニメーション中のパーティクルとして設定
+            this._animationParticles.push(particle);
         };
         ParticleEmitter.prototype.updateParticleColor = function () {
             var colorHSL = createjs.Graphics.getHSL(new Date().getTime() / 20 + Math.random() * 60, 90 + Math.random() * 10, 50 + Math.random() * 10);
@@ -329,7 +339,6 @@ var project;
         __extends(Particle, _super);
         function Particle() {
             _super.call(this, "", "12px FontAwesome");
-            _super.call(this, "", 12 + Math.floor(50 * Math.random()) + "px FontAwesome");
             this._isStar = Math.random() > 0.8;
             var iconStr = this.getIconStr(this._isStar);
             this.text = iconStr;
@@ -341,9 +350,9 @@ var project;
         }
         Particle.prototype.getIconSize = function (isStar) {
             if (!isStar)
-                return 12 + Math.floor(50 * Math.random());
+                return 16 + Math.floor(60 * Math.random());
             else
-                return 8 + Math.floor(14 * Math.random());
+                return 15 + Math.floor(50 * Math.random());
         };
         Particle.prototype.getIconStr = function (isStar) {
             // アイコンの Unicode を指定
@@ -384,10 +393,8 @@ var project;
                 this.vy += 0.5;
                 this.y += this.vy;
                 // 死にそうになったら点滅を開始
-                if (this._count >= this._life / 2) {
-                    // this.alpha = 0.6 + Math.random() * 0.4;
+                if (this._count >= this._life / 2)
                     this.alpha = (1 - this._count / this._life);
-                }
             }
             else {
                 // 寿命が来たらフラグを立てる
@@ -566,13 +573,37 @@ var project;
             this._particleCreator.forceResizeHandler();
             this._loadingBarTask = new project.ProgressLoadingBarTask(this);
             createjs.Sound.alternateExtensions = ["mp3"];
+            this.showContentsInfo();
         }
+        Main.prototype.showContentsInfo = function () {
+            this.checkDeviceInfo();
+            this.checkLowPerformanceMode();
+            var contentsInfo = document.getElementById("contentsInfo");
+            var activePlugin = createjs.Sound.activePlugin.toString();
+            if (activePlugin.indexOf("HTMLAudio"))
+                project.Param.isHTMLAudio = true;
+            contentsInfo.innerHTML = activePlugin;
+        };
         Main.prototype.checkDeviceInfo = function () {
             var ua = navigator.userAgent;
             if (ua.indexOf("iPhone") > 0 || ua.indexOf("iPad") > 0 || ua.indexOf("iPod") > 0)
                 project.Param.isIOS = true;
             else if (ua.indexOf("Android") > 0)
                 project.Param.isAndroid = true;
+        };
+        Main.prototype.checkLowPerformanceMode = function () {
+            var contentsInfo = document.getElementById("contentsInfo");
+            var activePlugin = createjs.Sound.activePlugin.toString();
+            if (activePlugin.indexOf("HTMLAudio") > 0)
+                project.Param.isHTMLAudio = true;
+            if (project.Param.isAndroid || project.Param.isIOS)
+                project.Param.lowPerformance = true;
+            if (project.Param.isHTMLAudio && isAudioSprite)
+                alert("申し訳ありません。ご利用の環境では正常に動作いたしません。");
+            var contentsInfoText = activePlugin;
+            if (project.Param.lowPerformance)
+                contentsInfoText += "<br>Low Performance Mode";
+            contentsInfo.innerHTML = contentsInfoText;
         };
         Main.prototype.init = function () {
             var soundManifest;
@@ -595,7 +626,6 @@ var project;
                     ]
                 }
             });
-            project.trace("isAudioSprite", isAudioSprite, "Plugin is", createjs.Sound.activePlugin.toString());
             this.startPreload(soundManifest);
         };
         /*

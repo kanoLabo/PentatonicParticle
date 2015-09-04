@@ -23,15 +23,48 @@ namespace project {
             this._particleCreator.forceResizeHandler();
             this._loadingBarTask = new ProgressLoadingBarTask(this);
             createjs.Sound.alternateExtensions = ["mp3"];
+
+            this.showContentsInfo();
+        }
+
+        private showContentsInfo():void
+        {
+            this.checkDeviceInfo();
+            this.checkLowPerformanceMode();
+            let contentsInfo:HTMLDivElement = <HTMLDivElement> document.getElementById("contentsInfo");
+            let activePlugin:string = createjs.Sound.activePlugin.toString();
+            if (activePlugin.indexOf("HTMLAudio"))
+                Param.isHTMLAudio = true;
+            contentsInfo.innerHTML = activePlugin;
         }
 
         private checkDeviceInfo():void
         {
-            let ua:string = navigator.userAgent;
+            var ua:string = navigator.userAgent;
             if (ua.indexOf("iPhone") > 0 || ua.indexOf("iPad") > 0 || ua.indexOf("iPod") > 0)
                 Param.isIOS = true;
             else if (ua.indexOf("Android") > 0)
                 Param.isAndroid = true;
+        }
+
+        private checkLowPerformanceMode():void
+        {
+            let contentsInfo:HTMLDivElement = <HTMLDivElement> document.getElementById("contentsInfo");
+            let activePlugin:string = createjs.Sound.activePlugin.toString();
+            if (activePlugin.indexOf("HTMLAudio") > 0)
+                Param.isHTMLAudio = true;
+
+            if (Param.isAndroid || Param.isIOS)
+                Param.lowPerformance = true;
+
+            if (Param.isHTMLAudio && isAudioSprite)
+                alert("申し訳ありません。ご利用の環境では正常に動作いたしません。");
+
+            let contentsInfoText:string = activePlugin;
+            if (Param.lowPerformance)
+                contentsInfoText += "<br>Low Performance Mode";
+            contentsInfo.innerHTML = contentsInfoText;
+
         }
 
         public init():void {
@@ -57,8 +90,6 @@ namespace project {
                     ]
                 }
             });
-
-            trace("isAudioSprite", isAudioSprite, "Plugin is", createjs.Sound.activePlugin.toString());
             this.startPreload(soundManifest);
         }
 
