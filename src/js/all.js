@@ -564,6 +564,17 @@ var project;
                 var createSoundManifestTask = new project.CreateSoundManifestTask();
                 soundManifest = createSoundManifestTask.getSoundManifest();
             }
+            // Webフォントのプリロード。非同期
+            WebFont.load({
+                custom: {
+                    // フォントファミリーを指定
+                    families: ['FontAwesome'],
+                    // CSS の URL を指定
+                    urls: [
+                        'css/style.css'
+                    ]
+                }
+            });
             project.trace("isAudioSprite", isAudioSprite, "Plugin is", createjs.Sound.activePlugin.toString());
             this.startPreload(soundManifest);
         };

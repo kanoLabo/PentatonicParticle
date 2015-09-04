@@ -10,6 +10,8 @@
 
 createjs.Sound.initializeDefaultPlugins();
 declare var isAudioSprite:boolean;
+declare var WebFont:any;
+
 namespace project {
 
     export class Main {
@@ -36,6 +38,19 @@ namespace project {
                 let createSoundManifestTask:project.CreateSoundManifestTask = new project.CreateSoundManifestTask();
                 soundManifest = createSoundManifestTask.getSoundManifest();
             }
+            
+            // Webフォントのプリロード。非同期
+            WebFont.load({
+                custom: {
+                    // フォントファミリーを指定
+                    families: ['FontAwesome'],
+                    // CSS の URL を指定
+                    urls: [
+                        'css/style.css'
+                    ]
+                }
+            });
+
             trace("isAudioSprite", isAudioSprite, "Plugin is", createjs.Sound.activePlugin.toString());
             this.startPreload(soundManifest);
         }
