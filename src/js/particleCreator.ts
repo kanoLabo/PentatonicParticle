@@ -19,6 +19,10 @@ namespace project {
             this._canvas = <HTMLCanvasElement> document.getElementById("myCanvas")
             this._stage = new createjs.Stage(this._canvas);
 
+            // タッチ対応
+            if (createjs.Touch.isSupported())
+                createjs.Touch.enable(this._stage);
+
             // Tickerを作成
             createjs.Ticker.timingMode = createjs.Ticker.RAF;
 
@@ -112,14 +116,14 @@ namespace project {
 
         /*
          * マウスを押した時の処理
-         * */
+         */
         private mouseDownHandler(event):void {
             this._isMouseDown = true;
         }
 
         /*
          * マウスを離した時の処理
-         * */
+         */
         private mouseUpHandler(event):void {
             this._isMouseDown = false;
         }
@@ -138,12 +142,8 @@ namespace project {
             if (this._isMouseDown) {
                 // マウスを押している場合にパーティクル発生命令
                 this._particleEmitter.emitParticle();
+                this.playSE();
 
-                // 5フレームに1回処理
-                if (this._cntTick++ % 7 == 0) {
-                    let soundID:string = "se_" + Math.floor(Math.random() * Param.SE_NUM);
-                    createjs.Sound.play(soundID, {pan: 0.01});
-                }
                 this._lineDrawer.addLinePoint(
                     this._particleEmitter.emitX,
                     this._particleEmitter.emitY
@@ -154,6 +154,18 @@ namespace project {
             }
 
             this._lineDrawer.update(this._particleEmitter.particleColor);
+        }
+
+        /*
+         * 効果音を鳴らす
+         */
+        private playSE():void
+        {
+            // 7フレームに1回処理
+            if (this._cntTick++ % 7 == 0) {
+                let soundID:string = "se_" + Math.floor(Math.random() * Param.SE_NUM);
+                createjs.Sound.play(soundID, {pan: 0.01});
+            }
         }
     }
 

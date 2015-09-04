@@ -15,5 +15,12 @@ namespace project {
 
         /* BGのID */
         static BGM_ID:string = "bgm";
+
+        /* iOSかどうか */
+        static isIOS:boolean = false;
+
+        /* Androidかどうか */
+        static isAndroid:boolean = false;
+
     }
 }

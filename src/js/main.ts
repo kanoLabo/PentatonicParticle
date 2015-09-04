@@ -21,10 +21,17 @@ namespace project {
         constructor() {
             this._particleCreator = new ParticleCreator();
             this._particleCreator.forceResizeHandler();
-
             this._loadingBarTask = new ProgressLoadingBarTask(this);
-
             createjs.Sound.alternateExtensions = ["mp3"];
+        }
+
+        private checkDeviceInfo():void
+        {
+            let ua:string = navigator.userAgent;
+            if (ua.indexOf("iPhone") > 0 || ua.indexOf("iPad") > 0 || ua.indexOf("iPod") > 0)
+                Param.isIOS = true;
+            else if (ua.indexOf("Android") > 0)
+                Param.isAndroid = true;
         }
 
         public init():void {
@@ -38,7 +45,7 @@ namespace project {
                 let createSoundManifestTask:project.CreateSoundManifestTask = new project.CreateSoundManifestTask();
                 soundManifest = createSoundManifestTask.getSoundManifest();
             }
-            
+
             // Webフォントのプリロード。非同期
             WebFont.load({
                 custom: {

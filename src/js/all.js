@@ -14,6 +14,10 @@ var project;
         Param.BGM_DURATION = 16 * 1000;
         /* BGのID */
         Param.BGM_ID = "bgm";
+        /* iOSかどうか */
+        Param.isIOS = false;
+        /* Androidかどうか */
+        Param.isAndroid = false;
         return Param;
     })();
     project.Param = Param;
@@ -39,6 +43,9 @@ var project;
             // ステージを準備
             this._canvas = document.getElementById("myCanvas");
             this._stage = new createjs.Stage(this._canvas);
+            // タッチ対応
+            if (createjs.Touch.isSupported())
+                createjs.Touch.enable(this._stage);
             // Tickerを作成
             createjs.Ticker.timingMode = createjs.Ticker.RAF;
             // メインのレイヤーを配置
@@ -120,13 +127,13 @@ var project;
         };
         /*
          * マウスを押した時の処理
-         * */
+         */
         MainLayer.prototype.mouseDownHandler = function (event) {
             this._isMouseDown = true;
         };
         /*
          * マウスを離した時の処理
-         * */
+         */
         MainLayer.prototype.mouseUpHandler = function (event) {
             this._isMouseDown = false;
         };
@@ -142,17 +149,23 @@ var project;
             if (this._isMouseDown) {
                 // マウスを押している場合にパーティクル発生命令
                 this._particleEmitter.emitParticle();
-                // 5フレームに1回処理
-                if (this._cntTick++ % 7 == 0) {
-                    var soundID = "se_" + Math.floor(Math.random() * project.Param.SE_NUM);
-                    createjs.Sound.play(soundID, { pan: 0.01 });
-                }
+                this.playSE();
                 this._lineDrawer.addLinePoint(this._particleEmitter.emitX, this._particleEmitter.emitY);
             }
             else {
                 this._lineDrawer.shiftLinePoint();
             }
             this._lineDrawer.update(this._particleEmitter.particleColor);
+        };
+        /*
+         * 効果音を鳴らす
+         */
+        MainLayer.prototype.playSE = function () {
+            // 7フレームに1回処理
+            if (this._cntTick++ % 7 == 0) {
+                var soundID = "se_" + Math.floor(Math.random() * project.Param.SE_NUM);
+                createjs.Sound.play(soundID, { pan: 0.01 });
+            }
         };
         return MainLayer;
     })(createjs.Container);
@@ -554,6 +567,13 @@ var project;
             this._loadingBarTask = new project.ProgressLoadingBarTask(this);
             createjs.Sound.alternateExtensions = ["mp3"];
         }
+        Main.prototype.checkDeviceInfo = function () {
+            var ua = navigator.userAgent;
+            if (ua.indexOf("iPhone") > 0 || ua.indexOf("iPad") > 0 || ua.indexOf("iPod") > 0)
+                project.Param.isIOS = true;
+            else if (ua.indexOf("Android") > 0)
+                project.Param.isAndroid = true;
+        };
         Main.prototype.init = function () {
             var soundManifest;
             if (isAudioSprite) {
