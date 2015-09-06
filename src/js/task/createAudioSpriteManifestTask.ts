@@ -1,4 +1,4 @@
-/// <reference path="param.ts" />
+/// <reference path="../param.ts" />
 namespace project {
 
     /*

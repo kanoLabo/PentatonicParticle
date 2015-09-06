@@ -1,11 +1,7 @@
-/// <reference path="../typings/preloadjs/preloadjs.d.ts" />
-/// <reference path="../typings/tweenjs/tweenjs.d.ts" />
-/// <reference path="../typings/easeljs/easeljs.d.ts" />
-/// <reference path="../typings/soundjs/soundjs.d.ts" />
-/// <reference path="particleCreator.ts" />
-/// <reference path="createAudioSpriteManifestTask.ts" />
-/// <reference path="createSoundManifestTask.ts" />
-/// <reference path="progressLoadingBarTask.ts" />
+/// <reference path="task/createAudioSpriteManifestTask.ts" />
+/// <reference path="task/createSoundManifestTask.ts" />
+/// <reference path="task/progressLoadingBarTask.ts" />
+/// <reference path="particle/particleCreator.ts" />
 /// <reference path="trace.ts" />
 
 createjs.Sound.initializeDefaultPlugins();
@@ -15,11 +11,11 @@ declare var WebFont:any;
 namespace project {
 
     export class Main {
-        private _particleCreator:ParticleCreator;
+        private _particleCreator:particle.ParticleCreator;
         private _loadingBarTask:ProgressLoadingBarTask;
 
         constructor() {
-            this._particleCreator = new ParticleCreator();
+            this._particleCreator = new particle.ParticleCreator();
             this._particleCreator.forceResizeHandler();
             this._loadingBarTask = new ProgressLoadingBarTask(this);
             createjs.Sound.alternateExtensions = ["mp3"];
