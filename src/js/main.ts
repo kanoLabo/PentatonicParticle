@@ -28,10 +28,11 @@ namespace project {
             this.checkDeviceInfo();
             this.checkLowPerformanceMode();
             let contentsInfo:HTMLDivElement = <HTMLDivElement> document.getElementById("contentsInfo");
-            let activePlugin:string = createjs.Sound.activePlugin.toString();
-            if (activePlugin.indexOf("HTMLAudio"))
-                Param.isHTMLAudio = true;
-            contentsInfo.innerHTML = activePlugin;
+            let contentsInfoText:string = createjs.Sound.activePlugin.toString();
+
+            if (Param.lowPerformance)
+                contentsInfoText += "<br>Low Performance Mode";
+            contentsInfo.innerHTML = contentsInfoText;
         }
 
         private checkDeviceInfo():void
@@ -55,12 +56,6 @@ namespace project {
 
             if (Param.isHTMLAudio && isAudioSprite)
                 alert("申し訳ありません。ご利用の環境では正常に動作いたしません。");
-
-            let contentsInfoText:string = activePlugin;
-            if (Param.lowPerformance)
-                contentsInfoText += "<br>Low Performance Mode";
-            contentsInfo.innerHTML = contentsInfoText;
-
         }
 
         public init():void {

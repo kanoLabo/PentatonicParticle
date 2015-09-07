@@ -603,10 +603,10 @@ var project;
             this.checkDeviceInfo();
             this.checkLowPerformanceMode();
             var contentsInfo = document.getElementById("contentsInfo");
-            var activePlugin = createjs.Sound.activePlugin.toString();
-            if (activePlugin.indexOf("HTMLAudio"))
-                project.Param.isHTMLAudio = true;
-            contentsInfo.innerHTML = activePlugin;
+            var contentsInfoText = createjs.Sound.activePlugin.toString();
+            if (project.Param.lowPerformance)
+                contentsInfoText += "<br>Low Performance Mode";
+            contentsInfo.innerHTML = contentsInfoText;
         };
         Main.prototype.checkDeviceInfo = function () {
             var ua = navigator.userAgent;
@@ -624,10 +624,6 @@ var project;
                 project.Param.lowPerformance = true;
             if (project.Param.isHTMLAudio && isAudioSprite)
                 alert("申し訳ありません。ご利用の環境では正常に動作いたしません。");
-            var contentsInfoText = activePlugin;
-            if (project.Param.lowPerformance)
-                contentsInfoText += "<br>Low Performance Mode";
-            contentsInfo.innerHTML = contentsInfoText;
         };
         Main.prototype.init = function () {
             var soundManifest;
